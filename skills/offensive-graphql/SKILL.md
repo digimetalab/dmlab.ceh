@@ -1,3 +1,8 @@
+---
+name: offensive-graphql
+description: "GraphQL security testing checklist: introspection abuse, batching attacks, query depth/complexity DoS, field suggestion enumeration, IDOR via GraphQL, injection through arguments, authorization bypass. Use when assessing GraphQL endpoints in web app tests or bug bounty."
+---
+
 # SKILL: GraphQL Vulnerabilities
 
 ## Metadata

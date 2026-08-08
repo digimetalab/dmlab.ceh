@@ -1,3 +1,8 @@
+---
+name: offensive-advanced-redteam
+description: "Practical advanced red team operations guide: OPSEC discipline, C2 infrastructure design, living-off-the-land techniques, lateral movement, persistence, data exfiltration, and evading modern defenses. Use for planning advanced red team engagements or understanding APT TTPs."
+---
+
 # SKILL: Advanced Redteam Ops
 
 ## Metadata

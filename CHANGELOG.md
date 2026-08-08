@@ -15,6 +15,7 @@ All notable changes to the **DMLab CEH** project are documented in this file. Th
 - **Complete 58 Offensive Skills Catalog** — Restored missing core skills (`offensive-sqli`, `offensive-rce`, `offensive-file-upload`) across 13 specialized domains.
 - **Knowledge Graph Visualizer (`graphify-out/`)** — Built a comprehensive 7,330-node knowledge graph and aggregated community HTML visualization.
 - **Governance & Policy Documents** — Updated `SECURITY.md`, `CONTRIBUTING.md`, and `CHANGELOG.md` to standard English.
+- **MIT License (`LICENSE`)** — Added permissive MIT license (use at your own risk, no warranty) with upstream attribution for the skills derived from SnailSpoit/Claude-Red. Updated the ethics/legal disclaimers in `README.md` and `SECURITY.md` to state that responsibility for lawful use rests with the user.
 
 ### Changed
 - **Tool Packaging & Git Submodules** — Structured `tools/prism` and `tools/spiderfoot` as embedded submodules while keeping one-off scripts in `tools/src/`.

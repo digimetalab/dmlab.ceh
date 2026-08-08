@@ -1,0 +1,6 @@
+[submodule "tools/prism"]
+	path = tools/prism
+	url = https://github.com/NovaCode37/Prism-platform.git
+[submodule "tools/spiderfoot"]
+	path = tools/spiderfoot
+	url = https://github.com/smicallef/spiderfoot.git

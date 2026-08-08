@@ -205,6 +205,7 @@ python sfcli.py -s http://127.0.0.1:5001 # Interactive CLI terminal & daemon cli
 | 📋 [**Project Management**](docs/PROJECT-MANAGEMENT.md) | Engagement tracking, evidence retention hygiene, and blackboard conventions. |
 | 💡 [**Technical Vision**](docs/IDEA.md) | Core motivation and development roadmap. |
 | 🛡️ [**Security Policy**](SECURITY.md) | Vulnerability disclosure and responsible reporting guidelines. |
+| 📜 [**License**](LICENSE) | MIT License — permissive, use at your own risk. |
 | 🤝 [**Contributing Guide**](CONTRIBUTING.md) | Standards for adding new skills, tools, and documentation. |
 | 📝 [**Changelog**](CHANGELOG.md) | Release notes and change history. |
 
@@ -214,4 +215,5 @@ python sfcli.py -s http://127.0.0.1:5001 # Interactive CLI terminal & daemon cli
 
 - **Strict Authorization:** All assessments must be preceded by validated written authorization.
 - **Data Privacy:** Raw target telemetry and scan outputs (`report/`, `results/`) are strictly gitignored and must never be committed to public version control.
-- **Lawful Purpose:** DMLab CEH is distributed to enhance defensive security posture through rigorous, standardized ethical testing. Misuse of these tools against unauthorized systems is strictly illegal.
+- **Use at Your Own Risk:** This project is provided under the **MIT License**, "AS IS" and **without warranty or restrictions beyond that license**. The author is not liable for any misuse. **Responsibility for lawful use rests entirely with the user** — misuse against unauthorized systems is strictly illegal.
+- **Lawful Purpose:** DMLab CEH is distributed to enhance defensive security posture through rigorous, standardized ethical testing.

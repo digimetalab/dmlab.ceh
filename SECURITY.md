@@ -38,4 +38,13 @@ All content in this repository is provided for authorized testing only:
 - Professional penetration testing engagements under signed client contracts.
 - Private cybersecurity laboratories and CTF competitions.
 
-The maintainers assume no liability for misuse or actions performed without explicit, documented authorization.
+This project is distributed under the MIT License **without warranty of any kind**
+and **without restrictions on use beyond the terms of that license**. The
+software is provided "AS IS" — the author and copyright holders are not liable
+for any claim, damages, or other liability arising from its use.
+
+**Responsibility lies with the user.** It is the user's sole responsibility to
+ensure that any use of this project complies with applicable laws, and to
+obtain explicit, documented authorization before testing any target. Misuse
+against unauthorized systems is strictly illegal, and the responsibility for
+such actions rests entirely with the person performing them.
