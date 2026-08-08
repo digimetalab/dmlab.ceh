@@ -131,61 +131,61 @@ def main() -> int:
         return 1
 
     if args.list:
-        print("Target skill (mode default = lokal project):")
-        print(f"  - {local_target} (LOKAL project, .agents/)")
+        print("Skill installation targets (Default = Local project):")
+        print(f"  - {local_target} (LOCAL project, .agents/skills/)")
         global_dirs = detect_global_dirs()
-        print("\nDirektori global terdeteksi (hanya aktif dengan --global):")
+        print("\nGlobal agent directories detected (only with --global):")
         if not global_dirs:
-            print("  (tidak ada agent global yang terdeteksi)")
+            print("  (no global agents detected)")
         else:
             for g in global_dirs:
                 print(f"  - {g}")
         return 0
 
     print("=== DMLab CEH : Skills Installer ===")
-    print(f"Sumber  : {skills_dir}")
+    print(f"Source : {skills_dir}")
 
-    # Mode Kustom
+    # Custom Directory Mode
     if args.dir:
         dest = Path(os.path.expanduser(args.dir)).resolve()
         if args.dry_run:
             count = len(args.only) if args.only else len(list(skills_dir.iterdir()))
-            print(f"  [dry-run] akan install {count} skill -> {dest}")
+            print(f"  [dry-run] Would install {count} skills -> {dest}")
         else:
             count = copy_skills(skills_dir, dest, args.only, dry_run=False)
-            print(f"  [ok] {count} skill -> {dest}")
-        print("Selesai.")
+            print(f"  [ok] {count} skills -> {dest}")
+        print("Installation complete.")
         return 0
 
-    # Mode Default: LOKAL project
+    # Default Mode: Local project (.agents/skills/)
     if not args.is_global:
         if args.dry_run:
             count = len(args.only) if args.only else len(list(skills_dir.iterdir()))
-            print(f"  [dry-run] akan install {count} skill -> {local_target} (lokal project)")
+            print(f"  [dry-run] Would install {count} skills -> {local_target} (local project)")
         else:
             count = copy_skills(skills_dir, local_target, args.only, dry_run=False)
-            print(f"  [ok] {count} skill -> {local_target}")
-        print("Selesai. Skills terpasang di .agents project ini (tidak menyentuh global).")
+            print(f"  [ok] {count} skills -> {local_target}")
+        print("Installation complete. Skills installed to .agents/skills/ (isolated locally).")
         return 0
 
-    # Mode Global
+    # Global Mode (--global)
     global_targets = detect_global_dirs()
     if args.agent:
         global_targets = [t for t in global_targets if args.agent.lower() in str(t).lower()]
 
     if not global_targets:
-        print("Tidak ada target agent global yang ditemukan. Gunakan --dir <path> untuk path kustom.")
+        print("No global agent directories found. Use --dir <path> for a custom destination.")
         return 1
 
     for t in global_targets:
         if args.dry_run:
             count = len(args.only) if args.only else len(list(skills_dir.iterdir()))
-            print(f"  [dry-run] akan install {count} skill -> {t} (global)")
+            print(f"  [dry-run] Would install {count} skills -> {t} (global)")
         else:
             count = copy_skills(skills_dir, t, args.only, dry_run=False)
-            print(f"  [ok] {count} skill -> {t}")
+            print(f"  [ok] {count} skills -> {t}")
 
-    print("Selesai. Skills terpasang global.")
+    print("Installation complete. Skills installed globally.")
     return 0
 
 

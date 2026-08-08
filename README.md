@@ -112,41 +112,36 @@ cd dmlab.ceh
 
 *(If cloned without `--recurse-submodules`, initialize them with: `git submodule update --init --recursive`)*
 
-### Step 2: Initialize Virtual Environment (`.venv`)
+### One-Command Automated Setup (Recommended)
 
-<details open>
-<summary><b>Linux / macOS / WSL</b></summary>
+Run the root installer to automatically initialize submodules, create `.venv`, install all Python libraries, and deploy the 58 skills:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+# Universal (Windows, Linux, macOS):
+python install.py
+
+# Linux / macOS / POSIX Shell:
+./install.sh
 ```
-</details>
 
-<details>
-<summary><b>Windows (PowerShell / Command Prompt)</b></summary>
+---
 
-```powershell
+### Step-by-Step Manual Setup
+
+If you prefer manual, granular control:
+
+```bash
+# 1. Initialize Git Submodules
+git submodule update --init --recursive
+
+# 2. Create Virtual Environment & Install Dependencies
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+# Linux/macOS: source .venv/bin/activate
+# Windows:     .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-```
-</details>
 
-### Step 3: Install 58 Skills to Local Agent Workspace
-
-Run the universal installer to copy the skill catalog into `.agents/skills/`:
-
-```bash
-# Universal Python Installer (All Operating Systems):
+# 3. Install 58 Skills to .agents/skills/
 python tools/src/install_skills.py
-
-# Optional: Preview without installing
-python tools/src/install_skills.py --dry-run
-
-# Optional: Install only a specific subset
-python tools/src/install_skills.py --only offensive-sqli offensive-xss
 ```
 
 ---
