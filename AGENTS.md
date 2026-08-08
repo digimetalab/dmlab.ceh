@@ -1,6 +1,6 @@
 ﻿# Agent Pentest Schema
 
-Arsitektur **multi-agent AI** untuk pentest web/infrastruktur yang lengkap. Setiap agent = satu otak specialist (di-drive oleh 1+ skill dari `.agents/skills/`) + satu workflow nyata (Prism CLI / SpiderFoot). Skill **tidak diubah** - hanya di-load on-demand sesuai fase.
+Arsitektur **multi-agent AI** untuk pentest web/infrastruktur yang lengkap. Setiap agent = satu otak specialist (di-drive oleh 1+ skill dari `skills/`) + satu workflow nyata (Prism CLI / SpiderFoot). Skill **tidak diubah** - hanya di-load on-demand sesuai fase.
 
 ---
 
@@ -75,7 +75,7 @@ Arsitektur **multi-agent AI** untuk pentest web/infrastruktur yang lengkap. Seti
 
 | Agent | Skill di-load | Workflow |
 |---|---|---|
-| **osint-agent** | `offensive-osint`, `offensive-osint-methodology` | `python tools/Prism-platform/cli.py scan <target> --type <domain\|email\|phone\|username> --json` |
+| **osint-agent** | `offensive-osint`, `offensive-osint-methodology` | `python tools/prism/cli.py scan <target> --type <domain\|email\|phone\|username> --json` |
 | **spiderfoot-agent** | `offensive-osint-methodology` | `python tools/spiderfoot/sf.py -s <target> -u all -o json` |
 | **fast-triage-agent** | `offensive-fast-checking` | Baca output recon, jalankan checklist quick-win |
 

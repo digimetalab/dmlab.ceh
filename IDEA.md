@@ -6,7 +6,7 @@ Pentest yang lengkap itu berulang dan berat: recon -> triage -> assessment per-a
 
 ## Ide
 
-**Multi-agent orchestrator di atas skill.** Setiap skill di `.agents/skills/` adalah "otak specialist" yang sudah berisi metodologi mendalam untuk satu permukaan serangan. Skema ini memetakan: 1 agent = 1+ skill + 1 workflow nyata (Prism CLI, SpiderFoot). Sebuah **Commander agent** menyusun rencana, meng-dispatch specialist yang tepat di fase yang tepat, lalu mengagregasi temuan menjadi laporan profesional.
+**Multi-agent orchestrator di atas skill.** Setiap skill di `skills/` adalah "otak specialist" yang sudah berisi metodologi mendalam untuk satu permukaan serangan. Skema ini memetakan: 1 agent = 1+ skill + 1 workflow nyata (Prism CLI, SpiderFoot). Sebuah **Commander agent** menyusun rencana, meng-dispatch specialist yang tepat di fase yang tepat, lalu mengagregasi temuan menjadi laporan profesional.
 
 Bukan membangun tool baru - tapi **mengorkestrasi yang sudah ada**: 58 skill methodology + 22 modul OSINT Prism + SpiderFoot.
 
@@ -22,7 +22,7 @@ Bukan membangun tool baru - tapi **mengorkestrasi yang sudah ada**: 58 skill met
 
 ## Visi
 
-1. **v1 (sekarang)** - skema + mapping skill->agent->workflow terdokumentasi di `AGENTS.md`; Commander menjalankan alurnya secara manual/terpandu di opencode.
+1. **v1 (sekarang)** - skema + mapping skill->agent->workflow terdokumentasi di `AGENTS.md`; Commander menjalankan alurnya secara manual/terpandu di agent mana pun (opencode, Claude Code, Cursor, dll).
 2. **v2** - folder `results/` sebagai blackboard terstruktur (engagement.json, findings per fase) agar orchestrator punya state antar sesi.
 3. **v3** - otomatisasi: Commander membaca `results/findings/*.json`, memutuskan eskalasi secara programatik, dan memicu reporting-agent otomatis.
 4. **v4** - API wrapper: orchestrator memanggil Prism/SpiderFoot via Python (bukan shell) agar bisa masuk CI/CD.

@@ -1,3 +1,71 @@
-graphify-out/
+# ======================================================================
+# DMLab CEH - .gitignore
+#
+# Filosofi: pisahkan kondisi TERINSTALL (dev/local) vs SOURCE (yang
+# boleh di-publish ke GitHub). Folder di bawah ini adalah artifact
+# install / runtime / data target — TIDAK pernah masuk repo.
+# ======================================================================
+
+# ---- AI agent installed (dev) ----------------------------------------
+# Agent yang ter-install secara lokal (opencode/Claude/Cursor dll)
+# dibuat di sini saat sesi berjalan. Boleh ada di local, jangan commit.
 .agents/
-tools/Prism-platform/
+.agent/
+
+# ---- Reference / vendor source (dev) ---------------------------------
+# Repo pihak ketiga yang di-clone untuk dipelajari/dibandingkan
+# (mis. source/Claude-Red). Bukan milik project ini.
+source/
+
+# ---- Tool packages (installed app) -----------------------------------
+# Paket tools prism & spiderfoot = gitlink (di-track sebagai submodule
+# embedded), kontennya tidak ikut di-commit. Sisa dependency runtime:
+tools/*/venv/
+tools/*/.venv/
+tools/*/__pycache__/
+
+# ---- Runtime data target ---------------------------------------------
+# Hasil scan / laporan / blackboard. Tidak ada data target yang
+# di-commit ke repositori publik.
+report/
+results/
+*.pcap
+*.cap
+*.hccapx
+*.zipx
+
+# ---- Python / venv ----------------------------------------------------
+# Virtualenv lokal project (cross-platform, dibuat saat setup)
+.venv/
+venv/
+ceh/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Graphify (knowledge graph index) --------------------------------
+graphify-out/
+.graphify/
+
+# ---- OS / editor ------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+
+# ---- Secrets / logs ---------------------------------------------------
+.env
+*.env
+.env.*
+*.log
+*.tmp
+credentials*
+secrets*
+*.key
+*.pem

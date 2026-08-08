@@ -1,6 +1,9 @@
 # Workflow Pentest Website Lengkap
 
-Alur end-to-end pentest website, memaksimalkan penggunaan 58 skill di `.agents/skills/` dan tooling yang sudah ada (`tools/Prism-platform`, `tools/spiderfoot`). Semua instalasi app/dependency diarahkan ke venv WSL project: `/mnt/d/Projects/ceh/ceh/bin/python`.
+Alur end-to-end pentest website, memaksimalkan penggunaan 58 skill di `skills/` dan tooling yang sudah ada (`tools/prism`, `tools/spiderfoot`). Semua instalasi app/dependency diarahkan ke virtualenv lokal project **`.venv/`** (cross-platform: Windows, Linux, macOS). Aktifkan venv sebelum menjalankan perintah Python:
+
+- Windows: `.venv\Scripts\activate`
+- Linux/macOS: `source .venv/bin/activate`
 
 > **Syarat:** target harus punya izin tertulis (bug bounty scope, kontrak, atau lab milik sendiri). Tanpa izin -> STOP.
 
@@ -144,30 +147,35 @@ Konvensi penamaan (lihat README): tipe + namatarget + timestamp lokal. Contoh:
 
 ---
 
-## Instalasi Tool Tambahan (via WSL venv project)
+## Instalasi Tool Tambahan (via .venv lokal project)
 
-Semua dependency di-install di venv WSL, bukan global:
+Semua dependency di-install ke `.venv/` lokal project, bukan global.
 
 ```bash
-# Aktifkan pip di venv (dibuat tanpa pip)
-/mnt/d/Projects/ceh/ceh/bin/python -m ensurepip
+# Aktifkan venv
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
 
 # Install di dalam venv project
-/mnt/d/Projects/ceh/ceh/bin/python -m pip install <package>
+pip install <package>
 
-# Contoh: dependency SpiderFoot (cherrypy, dll)
-/mnt/d/Projects/ceh/ceh/bin/python -m pip install -r /mnt/d/Projects/ceh/tools/spiderfoot/requirements.txt
+# Contoh: dependency SpiderFoot
+pip install -r tools/spiderfoot/requirements.txt
 
 # Tool CLI yang diinstal via pip, panggil langsung dari venv
-/mnt/d/Projects/ceh/ceh/bin/python -m tool_name ...
+python -m tool_name ...
 ```
 
-Tool berbasis repo (bukan pip) diletakkan di `tools/` — taruh dependency-nya di venv, jalankan interpreter venv terhadap kode tool:
+Tool berbasis repo (bukan pip) diletakkan sebagai paket app di `tools/<tool>/` (contoh `tools/prism`, `tools/spiderfoot`) — di-track sebagai **gitlink** (submodule embedded). Tarik isinya sekali: `git submodule update --init --recursive`. Taruh dependency-nya di venv, jalankan interpreter venv terhadap kode tool:
 
 ```bash
-cd /mnt/d/Projects/ceh/tools/<tool>
-/mnt/d/Projects/ceh/ceh/bin/python main.py ...
+cd tools/<tool>
+python cli.py ...
 ```
+
+> `tools/src/` HANYA untuk script pendukung one-off (bash/python helper, di-commit). Paket aplikasi penuh (Prism, SpiderFoot) masuk `tools/<nama>/`.
 
 ---
 
