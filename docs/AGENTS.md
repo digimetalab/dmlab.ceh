@@ -1,87 +1,88 @@
-﻿# Agent Pentest Schema
+# Multi-Agent Penetration Testing Architecture
 
-Arsitektur **multi-agent AI** untuk pentest web/infrastruktur yang lengkap. Setiap agent = satu otak specialist (di-drive oleh 1+ skill dari `skills/`) + satu workflow nyata (Prism CLI / SpiderFoot). Skill **tidak diubah** - hanya di-load on-demand sesuai fase.
+This document defines the **Multi-Agent Orchestration Architecture** of DMLab CEH. The framework decouples high-level campaign orchestration from granular technical execution: each specialist agent represents a modular capability driven by one or more standardized skills from `skills/`, backed by real-world tooling engines ([Prism CLI](../tools/prism) and [SpiderFoot](../tools/spiderfoot)).
 
 ---
 
-## 1. Prinsip Inti
+## 1. Core Design Principles
 
-| Prinsip | Aturan |
+| Principle | Specification |
 |---|---|
-| **1 skill = 1 specialist** | Agent tidak punya pengetahuan built-in; ia me-load SKILL.md yang relevan saat di-dispatch |
-| **Orchestrator, bukan monolith** | Commander agent mengatur alur; specialist agent mengerjakan satu domain |
-| **Workflow yang ada** | Eksekusi via Prism CLI (`python cli.py scan ...`) dan SpiderFoot (`sf.py -m ...`) - tidak reinvent tooling |
-| **Shared blackboard** | Temuan antar agent disimpan di `results/` sebagai JSON, dibaca agent berikutnya |
-| **Authorization gate** | Tidak ada fase eksekusi sebelum scope + izin tertulis divalidasi |
-| **Evidence hygiene** | Setiap temuan diberi timestamp, tool, dan bukti mentah (aturan `offensive-reporting`) |
+| **One Skill = One Specialist** | Agents do not rely on implicit model memory; they dynamically ingest dedicated `SKILL.md` specifications upon activation. |
+| **Decoupled Orchestrator** | A centralized **Commander Agent** governs the assessment Directed Acyclic Graph (DAG), while specialist subagents execute scoped domain tasks. |
+| **Direct Tooling Integration** | Practical execution leverages real CLI tools (`python tools/prism/cli.py`, `sf.py`) rather than mock simulations. |
+| **Shared Evidence Blackboard** | Inter-agent communication and intermediate findings are persisted in `results/` as structured JSON artifacts. |
+| **Strict Authorization Gate** | No active scanning or exploitation phase may proceed without validated, documented authorization. |
+| **Evidence & Reporting Hygiene** | All findings are timestamped, attributed to specific tools/payloads, and formatted per CVSS v3.1/v4.0 standards. |
 
 ---
 
-## 2. Struktur Layer
+## 2. Multi-Layer Hierarchy
 
 ```
-+-----------------------------------------------------------+
-|              COMMANDER (Orchestrator Agent)               |
-|  baca intent -> validasi izin -> susun rencana DAG ->     |
-|  dispatch specialist -> agregasi temuan -> status          |
-+---------------------------+-------------------------------+
-                            | dispatch (load skill + panggil workflow)
-            +---------------+-------------------+
-            v               v                   v
-      +------------+  +--------------+  +----------------+
-      | RECON      |  | ASSESSMENT   |  | DEEP / EXPLOIT |
-      | agents     |  | agents       |  | agents         |
-      +------------+  +--------------+  +----------------+
-            |               |                   |
-            +---------------+-------------------+
-                            v
-                  +-------------------+
-                  | REPORTING AGENT   |  -> deliverable (PDF/HTML/MD)
-                  +-------------------+
++-------------------------------------------------------------------------+
+|                       COMMANDER (Orchestrator Agent)                    |
+|   Intent Parsing -> Authorization Verification -> DAG Plan Construction |
+|        -> Specialist Dispatch -> Evidence Correlation -> Status Sync    |
++------------------------------------+------------------------------------+
+                                     |
+                +--------------------+--------------------+
+                v                                         v
++-------------------------------+       +-------------------------------+
+|     RECONNAISSANCE LAYER      |       |       ASSESSMENT LAYER        |
+|  - Passive OSINT Agent        |       |  - Web Application Agent      |
+|  - SpiderFoot Footprint Agent |       |  - Authentication & IAM Agent |
+|  - Fast Triage Agent          |       |  - Active Directory Agent     |
++---------------+---------------+       |  - Cloud & Infrastructure     |
+                |                       |  - Wireless & RF Agent        |
+                |                       +---------------+---------------+
+                |                                       |
+                +-------------------+-------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|                     DEEP EXPLOITATION & VERIFICATION                    |
+|  - Exploit Development Agent  - Red Team Operations  - Fuzzing Agent    |
++-----------------------------------+-------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|                             REPORTING AGENT                             |
+|       Consolidates Blackboard Findings -> Generates Standard Deliverable|
++-------------------------------------------------------------------------+
 ```
 
 ---
 
-## 3. Commander Agent (Orchestrator)
+## 3. Commander Agent (Orchestrator Lifecycle)
 
-**Peran:** single entry point. Bertanggung jawab atas seluruh siklus hidup engagement.
+The **Commander Agent** is the single entry point for every engagement and is responsible for managing the end-to-end testing lifecycle:
 
-**Alur kerja:**
-1. **Parse intent** - ekstrak target, tipe (domain/ip/email/phone/username), scope, dan tujuan dari perintah user.
-2. **Authorization gate** - wajib konfirmasi izin sebelum eksekusi. Jika tidak jelas -> berhenti, minta klarifikasi.
-3. **Plan build** - susun DAG fase berdasarkan tipe target:
+1. **Intent Parsing**: Extracts target identifier, target category (Domain, IP, CIDR, Web Application, Identity), scope boundaries, and operational constraints from the analyst's prompt.
+2. **Authorization Verification**: Validates explicit consent and rules of engagement (RoE). Halts execution if scope is ambiguous.
+3. **DAG Plan Construction**: Generates a phased execution graph:
    ```
-   recon -> fast-triage -> assessment -> deep -> reporting
+   Reconnaissance -> Fast Triage -> Surface Assessment -> Deep Verification -> Reporting
    ```
-   Setiap node berisi: agent tujuan, skill yang di-load, workflow yang dijalankan.
-4. **Dispatch** - panggil specialist agent, beri konteks blackboard (target, scope, temuan sebelumnya).
-5. **Aggregate & escalate** - hasil assessment menentukan apakah perlu agent deep (contoh: temuan SQLi -> dispatch agent sqli; endpoint GraphQL -> dispatch agent graphql).
-6. **Status tracking** - simpan progress di `results/engagement.json`.
-
-**Contoh perintah user -> plan:**
-
-| Perintah | Fase yang di-activate |
-|---|---|
-| "scan target domain X" | recon -> fast-triage -> assessment web |
-| "tes SQLi di endpoint ini" | assessment web (agent sqli) -> reporting |
-| "pentest wireless" | recon wireless -> assessment wireless -> reporting |
-| "laporin hasil scan" | reporting |
+4. **Specialist Dispatch**: Activates targeted specialist subagents, supplying relevant blackboard context.
+5. **Dynamic Escalation**: Inspects intermediate findings (e.g., an exposed GraphQL endpoint triggers the `graphql-agent`; discovered domain credentials trigger the `ad-agent`).
+6. **Blackboard Synchronization**: Maintains operational state in `results/engagement.json`.
 
 ---
 
 ## 4. Specialist Agents & Skill Mapping
 
-### Layer RECON
+### Reconnaissance Layer
 
-| Agent | Skill di-load | Workflow |
+| Agent | Loaded Skills | Execution Tooling |
 |---|---|---|
 | **osint-agent** | `offensive-osint`, `offensive-osint-methodology` | `python tools/prism/cli.py scan <target> --type <domain\|email\|phone\|username> --json` |
 | **spiderfoot-agent** | `offensive-osint-methodology` | `python tools/spiderfoot/sf.py -s <target> -u all -o json` |
-| **fast-triage-agent** | `offensive-fast-checking` | Baca output recon, jalankan checklist quick-win |
+| **fast-triage-agent** | `offensive-fast-checking` | Automated header inspection, quick-win checklists, and exposure audits |
 
-### Layer ASSESSMENT (per attack surface)
+### Assessment Layer (Attack Surface Specialists)
 
-| Agent | Skill di-load |
+| Agent | Loaded Skills |
 |---|---|
 | **web-agent** | `offensive-fast-checking`, `offensive-business-logic`, `offensive-parameter-pollution`, `offensive-idor`, `offensive-race-condition` |
 | **sqli-agent** | `offensive-sqli`, `offensive-waf-bypass` |
@@ -102,66 +103,26 @@ Arsitektur **multi-agent AI** untuk pentest web/infrastruktur yang lengkap. Seti
 | **iot-agent** | `offensive-iot` |
 | **ai-agent** | `offensive-ai-security` |
 
-### Layer DEEP / EXPLOIT
+### Deep Verification & Exploit Layer
 
-| Agent | Skill di-load |
+| Agent | Loaded Skills |
 |---|---|
 | **exploit-agent** | `offensive-exploit-development`, `offensive-basic-exploitation`, `offensive-crash-analysis`, `offensive-toctou` |
 | **redteam-agent** | `offensive-initial-access`, `offensive-advanced-redteam`, `offensive-edr-evasion`, `offensive-shellcode`, `offensive-keylogger-arch`, `offensive-windows-boundaries`, `offensive-windows-mitigations` |
 | **fuzzing-agent** | `offensive-fuzzing`, `offensive-bug-identification`, `offensive-vuln-classes` |
 
-### Layer REPORTING
+### Reporting Layer
 
-| Agent | Skill di-load |
-|---|---|
-| **reporting-agent** | `offensive-reporting`, `offensive-fast-checking` |
-
----
-
-## 5. Data Flow & Blackboard
-
-```
-results/
-├── engagement.json      <- status seluruh engagement (Commander)
-├── recon/<target>.json  <- output recon (osint-agent, spiderfoot-agent)
-└── findings/            <- temuan tiap specialist agent (per fase)
-    ├── fast-triage.json
-    ├── sqli.json
-    └── ...
-
-report/                  <- deliverable akhir (reporting-agent)
-    └── <tipe>_<namatarget>_<yyyymmdd>_<hhmm>.md
-```
-
-**Alur temuan:**
-1. Specialist agent selesai -> tulis temuan JSON ke `results/findings/<phase>.json`.
-2. Commander baca semua findings -> tentukan eskalasi.
-3. Reporting-agent konsumsi seluruh findings + recon -> susun laporan sesuai `offensive-reporting` (CVSS, bukti, remediasi) ke `report/<tipe>_<namatarget>_<yyyymmdd>_<hhmm>.md`.
+| Agent | Loaded Skills | Output |
+|---|---|---|
+| **reporting-agent** | `offensive-reporting`, `offensive-fast-checking` | Generates standardized Markdown/HTML/PDF audit reports in `report/` |
 
 ---
 
-## 6. Escalation Rules (Logika Dispatch)
+## 5. Agent Invocation & Inter-Agent Communication
 
-Commander memutuskan eskalasi dari output fase sebelumnya:
+When operating with AI coding assistants (Claude Code, OpenCode, Cursor, Codex), specialist agents are invoked either via subagent tools or by referencing their domain keyword:
 
-| Temuan | Dispatch ke |
-|---|---|
-| Target punya web app aktif | web-agent -> fast-triage |
-| Params menerima input user | sqli-agent, xss-agent, ssti-agent, xxe-agent |
-| Endpoint `/graphql` terdeteksi | graphql-agent |
-| Upload form ditemukan | file-upload-agent |
-| Header/behavior aneh (CL.TE) | smuggling-agent |
-| Token JWT/OAuth dipakai | auth-agent |
-| Infra Windows + domain | ad-agent, redteam-agent |
-| Target wireless/scoped RF | wireless-agent |
-| Cloud aset teridentifikasi | cloud-agent |
-| CVE/pattern fuzzable | fuzzing-agent -> exploit-agent |
-
----
-
-## 7. Authorization & Safety (WAJIB)
-
-1. Hanya eksekusi terhadap target dengan **izin tertulis** (bug bounty scope, kontrak, atau lab milik sendiri).
-2. Commander **wajib** konfirmasi scope sebelum dispatch fase eksekusi.
-3. Semua output disimpan lokal; **tidak ada data target yang di-commit** ke repositori publik.
-4. Dokumen ini untuk pendidikan & pengujian resmi saja.
+- Prompt example: `"Execute passive reconnaissance on target example.com"` → Dispatches `osint-agent` with `tools/prism`.
+- Prompt example: `"Analyze the GraphQL endpoint for authorization bypass and introspection issues"` → Activates `graphql-agent` with `offensive-graphql`.
+- Prompt example: `"Generate the final pentest report from blackboard findings"` → Dispatches `reporting-agent` with `offensive-reporting`.

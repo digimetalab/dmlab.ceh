@@ -1,34 +1,33 @@
 # Changelog
 
-Semua perubahan signifikan di DMLab CEH dicatat di sini. Format mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan project menggunakan [Semantic Versioning](https://semver.org/).
+All notable changes to the **DMLab CEH** project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and adheres to [Semantic Versioning](https://semver.org/).
+
+---
 
 ## [Unreleased]
 
 ### Added
-- **Rebrand ke "DMLab CEH"** — README, IDEA, docs diperbarui jadi identitas baru.
-- **Model "Terinstall vs Source"** — `.gitignore` memisahkan artifact dev lokal (`.agents/`, `.venv/`, `source/`, `report/`, `results/`, `graphify-out/`) dari source yang di-commit (`skills/`, `tools/src/`, `tools/prism`*, `tools/spiderfoot`*, `template/`, docs). *gitlink.
-- **Cross-platform support** — Windows, Linux, macOS. Tidak bergantung pada WSL. Virtualenv lokal `.venv/`.
-- **Skill library lengkap 58 skill** — pulihkan 3 skill yang hilang dari `source/Claude-Red` (upstream): `offensive-sqli`, `offensive-rce`, `offensive-file-upload`. Semua 58 skill byte-identical dengan upstream.
-- **`tools/src/install_skills.py` & `.sh`** — universal cross-platform installer (default: install ke `.agents/skills/` **lokal project**, bukan global). Opsi `--global` untuk opt-in ke agent global. Mendukung opencode, Claude Code, Cursor, Codex, dir kustom.
-- **`.gitattributes` Linguist Configuration** — memastikan identitas repository adalah Python murni dan normalisasi LF otomatis lintas OS.
-- **`MINDMAP.md`** — peta coverage 58 skill per attack surface + cross-reference OWASP/MITRE.
-- **`ONBOARDING.md`** — panduan setup lengkap cross-platform (`.venv/`, gitlink, dependency, install skills lokal).
-- **`PROJECT-MANAGEMENT.md`** — manajemen engagement, escalation rules, evidence hygiene, blackboard, git hygiene.
-- **Unified `requirements.txt` di root** — menggabungkan seluruh dependensi library Python lintas tools (`tools/prism`, `tools/spiderfoot`, reporting & core utilities) ke dalam satu file instalasi tunggal di root repository.
-- **Restrukturisasi folder `docs/`** — dokumen teknis (`AGENTS.md`, `WORKFLOW.md`, `ONBOARDING.md`, `MINDMAP.md`, `PROJECT-MANAGEMENT.md`, `IDEA.md`) dirapikan ke dalam direktori `docs/` untuk menjaga kerapian root workspace.
-- **`CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`** — dokumen tata kelola project.
+- **Rebrand to "DMLab CEH"** — Comprehensive overhaul of repository identity, architecture docs, and technical specifications.
+- **Universal Python Installer (`tools/src/install_skills.py`)** — 100% cross-platform installer natively supporting Windows, Linux, and macOS.
+- **Unified Root `requirements.txt`** — Consolidated all dependencies for Prism, SpiderFoot, reporting utilities, and core frameworks into a single root manifest.
+- **Documentation Directory Organization (`docs/`)** — Centralized all architectural guides (`AGENTS.md`, `WORKFLOW.md`, `ONBOARDING.md`, `MINDMAP.md`, `PROJECT-MANAGEMENT.md`, `IDEA.md`) into `docs/`.
+- **Linguist & Line Ending Configurations (`.gitattributes`)** — Added `.gitattributes` to enforce automatic LF normalization and accurately attribute Python language statistics on GitHub.
+- **Complete 58 Offensive Skills Catalog** — Restored missing core skills (`offensive-sqli`, `offensive-rce`, `offensive-file-upload`) across 13 specialized domains.
+- **Knowledge Graph Visualizer (`graphify-out/`)** — Built a comprehensive 7,330-node knowledge graph and aggregated community HTML visualization.
+- **Governance & Policy Documents** — Updated `SECURITY.md`, `CONTRIBUTING.md`, and `CHANGELOG.md` to standard English.
 
 ### Changed
-- **Struktur `tools/` dirapikan** — paket app (`prism`, `spiderfoot`) pindah langsung ke `tools/` dan di-track sebagai **gitlink** (submodule embedded). `tools/src/` khusus script pendukung one-off.
-- **`WORKFLOW.md`** — path paket app diperbaiki (`tools/<tool>/`), perintah cross-platform pakai `.venv/`.
-- **README & ONBOARDING** — total rewrite cross-platform, `.venv/`, default skill install lokal `.agents/`, hapus semua referensi WSL/`ceh/`.
-- **`.gitignore`** — update: `.venv/`, hapus `ceh/`, tools/prism & tools/spiderfoot diganti jadi gitlink entries.
+- **Tool Packaging & Git Submodules** — Structured `tools/prism` and `tools/spiderfoot` as embedded submodules while keeping one-off scripts in `tools/src/`.
+- **Environment Isolation (`.venv/`)** — Transitioned from platform-dependent virtual environments to local cross-platform `.venv/`.
+- **Local Skills Destination** — Configured default installation to project-isolated `.agents/skills/` (gitignored), preventing pollution of the global agent environment.
 
 ### Removed
-- **WSL dependency** — semua perintah sekarang cross-platform (Windows, Linux, macOS).
-- **`ceh/` venv** — dihapus (WSL-only), diganti `.venv/` cross-platform.
-- **Data target di-untrack dari git** — `results/` (findings/recon bankkertiawan) di-`git rm --cached`.
+- **PowerShell Dependency (`install_skills.ps1`)** — Eliminated PowerShell scripts in favor of universal Python and POSIX shell standards.
+- **Platform Specificity** — Removed all hardcoded WSL path dependencies across all documentation and scripts.
+- **Target Telemetry Data** — Removed and untracked all historical assessment findings in `results/`.
 
-## [Initial commit] — 2cce4ce
+---
 
-Restrukturisasi awal: template report ke `template/`, script ke `tools/src/`, 55 skill ke `skills/`, `.agents` dihapus dari track, docs path diperbarui.
+## [Initial Release] — 2cce4ce
+
+- Initial repository structure with core reporting templates, helper scripts, 55 baseline offensive skills, and documentation.

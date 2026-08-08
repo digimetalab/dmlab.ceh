@@ -1,147 +1,121 @@
-# ONBOARDING — Mulai Pakai DMLab CEH
+# Onboarding & Environment Setup Guide
 
-Panduan langkah-demi-langkah untuk setup workspace. Project ini **agnostic AI agent** — semua skill berformat `SKILL.md` standar (YAML frontmatter `name` + `description`) yang didukung **Claude Code, opencode, Cursor, Codex**, dan agent lain.
+Welcome to **DMLab CEH**. This guide covers the complete step-by-step setup process across **Windows, Linux, and macOS**. 
 
-**Cross-platform**: Windows, Linux, macOS. Tidak bergantung pada WSL.
-
----
-
-## 1. Prasyarat
-
-- **Python 3.8+** (recommended 3.10+)
-- **Git**
-- **Docker** (untuk Prism web dashboard, opsional)
-- Salah satu AI agent CLI (opencode, Claude Code, Cursor, Codex, dll.)
+The framework is **agent-agnostic**: all 58 offensive security skills use the standardized `SKILL.md` format (YAML frontmatter with `name` and `description`), natively supported by **Claude Code, OpenCode, Cursor, Codex**, and other AI coding assistants.
 
 ---
 
-## 2. Clone Project
+## 1. Prerequisites
+
+- **Python 3.8+** (recommended: Python 3.10, 3.11, or 3.12)
+- **Git** (with submodule support)
+- **C/C++ Build Tools** (optional, for native Python packages if wheels are not pre-built)
+- An AI coding agent or terminal environment of your choice
+
+---
+
+## 2. Clone Repository & Submodules
+
+Clone the repository recursively to pull all integrated tools ([Prism](../tools/prism) and [SpiderFoot](../tools/spiderfoot)):
 
 ```bash
-git clone https://github.com/digimetalab/dmlab.ceh.git
+git clone --recurse-submodules https://github.com/digimetalab/dmlab.ceh.git
 cd dmlab.ceh
 ```
 
+> [!NOTE]
+> If you cloned without `--recurse-submodules`, initialize them anytime using:
+> ```bash
+> git submodule update --init --recursive
+> ```
+
 ---
 
-## 3. Setup Virtualenv Lokal `.venv/` & Install Dependensi
+## 3. Local Virtual Environment (`.venv`) & Unified Dependencies
 
-Buat `.venv/` di root project dan pasang seluruh dependensi tools (Prism, SpiderFoot, reporting, dsb.):
+Create a local virtual environment to ensure complete dependency isolation:
 
+### Linux / macOS
 ```bash
-# Linux / macOS:
 python3 -m venv .venv
 source .venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-# Windows (PowerShell):
+### Windows (PowerShell)
+```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
+pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-# Windows (Command Prompt):
+### Windows (Command Prompt)
+```cmd
 python -m venv .venv
 .venv\Scripts\activate.bat
 pip install -r requirements.txt
-
-# Verifikasi
-python --version
 ```
 
 ---
 
-## 4. Setup Skills ke Agent Lokal
+## 4. Install 58 Offensive Skills to Local Workspace
 
-Jalankan installer untuk memasang 58 skill ke `.agents/skills/` **lokal project**:
-
-```bash
-# Universal (Windows / Linux / macOS):
-python tools/src/install_skills.py --dry-run   # preview dulu
-python tools/src/install_skills.py             # install ke .agents/ project
-
-# Linux / macOS / Shell:
-./tools/src/install_skills.sh
-```
-
-> **Catatan:** Default installer menyalin skill ke `.agents/skills/` **di dalam project ini** (lokal), bukan ke environment global. Orang yang clone project ini langsung mendapat skill siap pakai.
-
----
-
-## 5. Submodule Tooling (Prism & SpiderFoot)
-
-Pastikan submodule tools pendukung telah diinisialisasi:
+By default, the installer copies all 58 standardized skills into `.agents/skills/` **locally within the project directory** (gitignored), ensuring that your global machine environment remains clean.
 
 ```bash
-# Tarik isi repo submodule (Prism & SpiderFoot)
-git submodule update --init --recursive
-```
+# Universal Python Installer (All Operating Systems):
+python tools/src/install_skills.py
 
----
-
-## 6. Install Skills ke Agent (Detail & Opsi Lanjutan)
-
-### Default: Lokal project (`.agents/skills/`)
-
-```bash
-python tools/src/install_skills.py                    # semua 58 skill
-python tools/src/install_skills.py --only offensive-sqli offensive-xss
+# Optional: Preview the installation plan
 python tools/src/install_skills.py --dry-run
+
+# Optional: Install only a specific subset of skills
+python tools/src/install_skills.py --only offensive-sqli offensive-xss offensive-jwt
+
+# Optional: List all recognized agent target directories
+python tools/src/install_skills.py --list
 ```
 
-### Opsional: Global agent (explicit opt-in)
+### Optional: Global Agent Installation
+If you want to install skills into your global agent configuration (e.g., `~/.claude/skills` or `~/.config/opencode/skills`):
 
 ```bash
-python tools/src/install_skills.py --global           # ke ~/.claude/skills, ~/.config/opencode/skills, dll.
-python tools/src/install_skills.py --agent opencode   # filter agent tertentu
-python tools/src/install_skills.py --dir ~/.agents    # custom dir
+python tools/src/install_skills.py --global
+python tools/src/install_skills.py --agent opencode --global
 ```
-
-### Agent yang didukung
-
-| Agent | Skill dir default (global) |
-|---|---|
-| **opencode** | `~/.config/opencode/skills/` atau `~/.agents/skills/` |
-| **Claude Code** | `~/.claude/skills/` |
-| **Cursor** | `.cursor/skills/` (di project) |
-| **Codex** | `.agents/` atau konfigurasi custom |
 
 ---
 
-## 7. Struktur & Dokumen Wajib Dibaca
+## 5. Verification & Health Check
 
-| Dokumen | Isi |
-|---|---|
-| [README.md](../README.md) | Gambaran project, model terinstall-vs-source, quick start |
-| [AGENTS.md](AGENTS.md) | Arsitektur multi-agent pentest (Commander schema, skill mapping, escalation) |
-| [WORKFLOW.md](WORKFLOW.md) | Alur pentest website 8 fase end-to-end |
-| [MINDMAP.md](MINDMAP.md) | Peta coverage skill per attack surface |
-| [PROJECT-MANAGEMENT.md](PROJECT-MANAGEMENT.md) | Manajemen engagement, task, blackboard |
-| [IDEA.md](IDEA.md) | Visi & roadmap project |
-
----
-
-## 8. Verifikasi Setup
+Verify that the local environment and tools are properly configured:
 
 ```bash
-# 1. Skills tersedia di skills/ (source, 58 folder)
-ls skills/ | wc -l
+# 1. Verify that the 58 skills exist in the local workspace:
+# Linux/macOS:
+ls .agents/skills | wc -l
+# Windows PowerShell:
+(Get-ChildItem .agents/skills).Count
 
-# 2. Skills terinstall di .agents/ project (target)
-ls .agents/skills/ | wc -l
-
-# 3. Venv aktif & interpreter jalan
+# 2. Verify Python version & environment:
 python --version
 
-# 4. Prism scan kering (target Anda sendiri)
+# 3. Test Prism OSINT scanner CLI (dry-run/help):
 cd tools/prism
-python cli.py scan example.com --type domain --json
+python cli.py --help
+
+# 4. Test SpiderFoot scanner:
+cd ../spiderfoot
+python sf.py -M
 ```
 
 ---
 
-## 9. Aturan Emas
+## 6. Golden Rules & Engagement Hygiene
 
-1. **No authz → no execution.** Target harus punya izin tertulis.
-2. Skill TIDAK diubah — `skills/` adalah source of truth.
-3. Data target (`report/` & `results/`) tidak pernah di-commit.
-4. `.venv/`, `.agents/`, `source/` = kondisi dev lokal — boleh ada di mesin, jangan di-commit (sudah gitignored).
+1. **Authorization Gate:** Never execute active tests against a target without explicit, written authorization.
+2. **Local Isolation:** Never commit runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) to public git branches.
+3. **Evidence Integrity:** Retain full, reproducible HTTP request/response payloads for all findings.

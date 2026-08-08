@@ -1,190 +1,120 @@
-# Workflow Pentest Website Lengkap
+# End-to-End Web & Infrastructure Penetration Testing Workflow
 
-Alur end-to-end pentest website, memaksimalkan penggunaan 58 skill di `skills/` dan tooling yang sudah ada (`tools/prism`, `tools/spiderfoot`). Semua instalasi app/dependency diarahkan ke virtualenv lokal project **`.venv/`** (cross-platform: Windows, Linux, macOS). Aktifkan venv sebelum menjalankan perintah Python:
+This document outlines the standard **8-Phase Penetration Testing Lifecycle** implemented in DMLab CEH, maximizing the orchestration of all **58 offensive security skills** and integrated OSINT engines ([Prism CLI](../tools/prism) and [SpiderFoot](../tools/spiderfoot)).
 
-- Windows: `.venv\Scripts\activate`
-- Linux/macOS: `source .venv/bin/activate`
+All Python commands and tools must execute inside the project's local virtual environment (`.venv`).
 
-> **Syarat:** target harus punya izin tertulis (bug bounty scope, kontrak, atau lab milik sendiri). Tanpa izin -> STOP.
+> [!IMPORTANT]
+> **Prerequisite:** Written authorization and verified rules of engagement (RoE) must be established before executing Phase 1. Without authorization → **HALT IMMEDIATELY**.
 
 ---
 
-## Fase 0 - Persiapan & Izin
+## Phase 0 — Scope, Authorization & Blackboard Setup
 
-| Aksi | Skill | Workflow/Perintah |
+| Action | Skill / Tool | Description & Output |
 |---|---|---|
-| Tentukan scope, target, batasan (domain/IP range) | - | Catat di `results/engagement.json` |
-| Konfirmasi izin tertulis | - | Wajib sebelum fase 1 |
-| Setup blackboard | - | `mkdir -p results/{recon,findings,report}` |
+| Define target scope, boundaries, and exclusions | Manual / Commander | Record target scope in `results/engagement.json` |
+| Confirm written legal authorization | Compliance Gate | Mandatory validation before proceeding |
+| Initialize blackboard structure | Filesystem | Create directories: `results/{recon,findings,evidence}` |
 
 ---
 
-## Fase 1 - Recon & Footprint (Passive)
+## Phase 1 — Passive Reconnaissance & OSINT
 
-Tujuannya: peta aset, teknologi, email, subdomain, exposure tanpa menyentuh target agresif.
+Objective: Enumerate attack surface, assets, subdomains, email exposure, and tech stack without generating active intrusive traffic.
 
-| Aksi | Skill di-load | Workflow |
+| Target Element | Loaded Skill | Workflow / Tool Execution |
 |---|---|---|
-| Footprint domain: WHOIS, DNS, crt.sh, GeoIP | `offensive-osint`, `offensive-osint-methodology` | Prism: `python cli.py scan <domain> --type domain --json` |
-| Subdomain + cert transparency | `offensive-osint-methodology` | Prism `cert_transparency` module (otomatis dalam scan) |
-| Teknologi web stack (headers, fingerprint) | `offensive-osint-methodology` | Prism `website` module |
-| Email & username exposure | `offensive-osint` | Prism: `scan <email> --type email`, `scan <user> --type username` |
-| Deep footprint + correlations | `offensive-osint-methodology` | SpiderFoot: `python sf.py -s <target> -u all -o json` |
-| Histori & endpoint tersembunyi | `offensive-osint` | Prism `wayback` module (snapshot + URLs) |
-| Threat intel (IP/domain reputation) | `offensive-osint` | Prism: `shodan`, `virustotal`, `abuseipdb`, `censys` |
+| Domain Footprint: WHOIS, DNS, crt.sh, GeoIP | `offensive-osint`, `offensive-osint-methodology` | Prism: `python cli.py scan <domain> --type domain --json` |
+| Subdomain & Certificate Transparency | `offensive-osint-methodology` | Prism `cert_transparency` module (automated in scan) |
+| Web Stack & Infrastructure Fingerprint | `offensive-osint-methodology` | Prism `website` module (headers, CMS, server tech) |
+| Email & Identity Exposure | `offensive-osint` | Prism: `python cli.py scan <email> --type email --json` |
+| Deep Correlation Footprint | `offensive-osint-methodology` | SpiderFoot: `python sf.py -s <target> -u all -o json` |
+| Historical Endpoints & Wayback Snapshots | `offensive-osint` | Prism `wayback` module |
+| Threat Intelligence & Reputation | `offensive-osint` | Prism: `shodan`, `virustotal`, `abuseipdb`, `censys` |
 
-**Output:** `results/recon/<target>.json`
+**Artifact Output:** `results/recon/<target>.json`
 
 ---
 
-## Fase 2 - Fast Triage (Quick-Win)
+## Phase 2 — Fast Triage & Quick-Win Discovery
 
-Tujuannya: temuan cepat berisiko tinggi yang sering terlewat.
+Objective: Rapidly detect high-risk, low-complexity misconfigurations and exposed sensitive resources.
 
-| Aksi | Skill di-load | Workflow |
+| Audit Vector | Loaded Skill | Execution Technique |
 |---|---|---|
-| Checklist quick-win: default creds, error leakage, exposed files, header misconfig, robots.txt, backup files | `offensive-fast-checking` | Manual/Burp/curl dari output recon |
-| Open redirect check | `offensive-open-redirect` | Manual |
-| Parameter pollution scan awal | `offensive-parameter-pollution` | Manual |
+| Quick-Win Checklist: Default creds, exposed backups, robots.txt, header misconfigurations | `offensive-fast-checking` | Automated inspection of recon data |
+| Open Redirect Checks | `offensive-open-redirect` | Parameter review on identified redirect parameters |
+| Parameter Pollution Baseline | `offensive-parameter-pollution` | Review duplicated parameters across query/body |
 
-**Output:** `results/findings/fast-triage.json`
-
----
-
-## Fase 3 - Mapping & Identifikasi Permukaan Serangan
-
-Dari output recon, tentukan endpoint yang masuk scope dan surface serangan:
-
-| Terdeteksi | Dispatch skill |
-|---|---|
-| Params menerima input user | SQLi, XSS, SSTI, XXE |
-| Endpoint `/graphql` | `offensive-graphql` |
-| Form upload | `offensive-file-upload` |
-| Token JWT/OAuth | `offensive-jwt`, `offensive-oauth` |
-| Header aneh / proxy | `offensive-request-smuggling` |
-| Objek ID langsung di URL | `offensive-idor` |
-
-**Output:** `results/findings/mapping.json`
+**Artifact Output:** `results/findings/fast-triage.json`
 
 ---
 
-## Fase 4 - Assessment Web (Per Attack Surface)
+## Phase 3 — Attack Surface Mapping & Targeted Assessment
 
-### 4.1 Input Injection
+Objective: Map identified endpoints to specialized vulnerability assessment subagents.
 
-| Attack surface | Skill di-load |
-|---|---|
-| SQL injection (error-based, blind, OOB, DB-specific, ORM) | `offensive-sqli` |
-| Cross-site scripting (stored, reflected, DOM) | `offensive-xss` |
-| Server-side template injection | `offensive-ssti` |
-| XML external entity | `offensive-xxe` |
-| Command injection / RCE | `offensive-rce` |
-| Insecure deserialization (Java/PHP/.NET gadget) | `offensive-deserialization` |
-
-### 4.2 Access Control & Logic
-
-| Attack surface | Skill di-load |
-|---|---|
-| Insecure direct object references | `offensive-idor` |
-| Business logic (harga, refund, workflow bypass, race) | `offensive-business-logic` |
-| Race condition (TOCTOU, single-packet) | `offensive-race-condition` |
-| Parameter pollution | `offensive-parameter-pollution` |
-
-### 4.3 Request-Level
-
-| Attack surface | Skill di-load |
-|---|---|
-| SSRF (cloud metadata, filter bypass) | `offensive-ssrf` |
-| HTTP request smuggling (CL.TE, TE.CL, h2 desync) | `offensive-request-smuggling` |
-| Open redirect (OAuth abuse, phishing pivot) | `offensive-open-redirect` |
-
-### 4.4 Infra-Level
-
-| Attack surface | Skill di-load |
-|---|---|
-| GraphQL (introspection, batching, IDOR via alias) | `offensive-graphql` |
-| File upload (extension bypass, polyglot, webshell) | `offensive-file-upload` |
-| WAF bypass (encoding, chunking, mutation) | `offensive-waf-bypass` |
-
-**Output per surface:** `results/findings/<surface>.json`
-
----
-
-## Fase 5 - Auth & Identity
-
-| Aksi | Skill di-load |
-|---|---|
-| JWT: alg:none, key confusion, secret cracking | `offensive-jwt` |
-| OAuth: redirect abuse, token leakage, PKCE bypass | `offensive-oauth` |
-
-**Output:** `results/findings/auth.json`
-
----
-
-## Fase 6 - Deep / Exploit (Opsional, sesuai temuan)
-
-| Kondisi | Skill di-load |
-|---|---|
-| Ada CVE/pattern yang bisa di-fuzz | `offensive-fuzzing`, `offensive-bug-identification`, `offensive-vuln-classes` |
-| Perlu exploit dev untuk PoC | `offensive-exploit-development`, `offensive-basic-exploitation`, `offensive-crash-analysis` |
-| Target punya infrastruktur cloud | `offensive-cloud` |
-| Infra AD/Windows terdeteksi | `offensive-active-directory`, `offensive-initial-access`, `offensive-advanced-redteam` |
-
----
-
-## Fase 7 - Reporting
-
-| Aksi | Skill di-load | Workflow |
+| Discovered Surface | Dispatched Agent & Skill | Focus Areas |
 |---|---|---|
-| Susun laporan: exec summary, temuan (CVSS v3.1/v4), reproduksi, dampak, remediasi, bukti | `offensive-reporting`, `offensive-fast-checking` | Manual (struktur di skill) |
-| Generate deliverable | `offensive-reporting` | Prism: `cli.py scan <target> --html --pdf` untuk report OSINT; rangkai temuan manual |
-
-**Output:** `report/<tipe>_<namatarget>_<yyyymmdd>_<hhmm>.md`
-
-Konvensi penamaan (lihat README): tipe + namatarget + timestamp lokal. Contoh:
-- `report/web_bprlestaribali_20260808_0743.md`
-- `report/person_cgyudistira_20260808_0743.md`
+| User Input Parameters | `sqli-agent` (`offensive-sqli`, `offensive-waf-bypass`) | Error-based, UNION, Blind, Time-based, JSON injection |
+| Dynamic Reflection Points | `xss-agent` (`offensive-xss`, `offensive-waf-bypass`) | Stored, Reflected, DOM XSS, Context-specific payloads |
+| Webhook / URL Fetching | `ssrf-agent` (`offensive-ssrf`, `offensive-open-redirect`) | Internal service access, Cloud metadata (IMDSv1/v2) |
+| Template Engines | `ssti-agent` (`offensive-ssti`) | Jinja2, Twig, Freemarker, Velocity code execution |
+| XML Parsing Endpoints | `xxe-agent` (`offensive-xxe`) | External entity injection, Out-of-band extraction |
+| File Upload Handlers | `file-upload-agent` (`offensive-file-upload`) | Extension bypass, MIME spoofing, Polyglots, Webshells |
+| Complex State Workflows | `web-agent` (`offensive-business-logic`) | Logic boundaries, Race conditions, Price manipulation |
 
 ---
 
-## Instalasi Tool Tambahan (via .venv lokal project)
+## Phase 4 — Identity, Authentication & API Auditing
 
-Semua dependency di-install ke `.venv/` lokal project, bukan global.
+Objective: Evaluate authentication strength, session management, and authorization controls.
+
+| Surface | Loaded Skill | Audit Objectives |
+|---|---|---|
+| JWT Implementations | `offensive-jwt` | `alg:none`, Key confusion (RS256→HS256), `kid` injection |
+| OAuth 2.0 / OIDC | `offensive-oauth` | Redirect URI manipulation, State fixation, Token theft |
+| Multi-Tenant / Object ID | `offensive-idor` | Horizontal/vertical privilege escalation across entities |
+| GraphQL Endpoints | `offensive-graphql` | Introspection leakage, Batching attacks, Deep nesting DoS |
+| HTTP Smuggling | `offensive-request-smuggling` | CL.TE / TE.CL desynchronization, Request hijacking |
+
+---
+
+## Phase 5 — Exploitation Verification & Impact Proof
+
+Objective: Safely prove real-world business risk through controlled, minimal-impact Proof of Concept (PoC).
+
+```
+1. Craft safe, non-destructive demonstration payload (e.g., SELECT user(), read harmless file).
+2. Validate WAF bypass requirements via `offensive-waf-bypass`.
+3. Capture exact HTTP request/response payloads with full headers.
+4. Record timestamps and remediation requirements to blackboard.
+```
+
+---
+
+## Phase 6 — Post-Exploitation & Infrastructure Assessment (If Scoped)
+
+| Scope | Loaded Skill | Objective |
+|---|---|---|
+| Active Directory / Hybrid | `offensive-active-directory` | Kerberoasting, ASREPRoasting, ADCS abuse, ACL paths |
+| Cloud Environments | `offensive-cloud` | IAM privilege escalation, Storage exfiltration, Metadata abuse |
+| Wireless / Physical Boundaries | `offensive-wifi`, `offensive-bluetooth-ble` | 802.1X inspection, BLE GATT analysis, Rogue AP audits |
+
+---
+
+## Phase 7 — Audit Reporting & Evidence Compilation
+
+Objective: Consolidate blackboard findings into executive and technical deliverables.
 
 ```bash
-# Aktifkan venv
-# Windows:
-.venv\Scripts\activate
-# Linux/macOS:
-source .venv/bin/activate
-
-# Install seluruh dependensi tools di dalam venv project
-pip install -r requirements.txt
-
-# Tool CLI yang diinstal via pip, panggil langsung dari venv
-python -m tool_name ...
+# Invoked via Reporting Agent with skill offensive-reporting
+# Generates report formatted as report/<type>_<target>_<yyyymmdd>_<hhmm>.md
 ```
 
-Tool berbasis repo (bukan pip) diletakkan sebagai paket app di `tools/<tool>/` (contoh `tools/prism`, `tools/spiderfoot`) — di-track sebagai **gitlink** (submodule embedded). Tarik isinya sekali: `git submodule update --init --recursive`. Taruh dependency-nya di venv, jalankan interpreter venv terhadap kode tool:
-
-```bash
-cd tools/<tool>
-python cli.py ...
-```
-
-> `tools/src/` HANYA untuk script pendukung one-off (bash/python helper, di-commit). Paket aplikasi penuh (Prism, SpiderFoot) masuk `tools/<nama>/`.
-
----
-
-## Ringkasan Pipeline
-
-```
-[0 Izin] -> [1 Recon OSINT: Prism + SpiderFoot]
-         -> [2 Fast Triage] -> [3 Mapping Surface]
-         -> [4 Assessment Web: SQLi/XSS/SSTI/XXE/RCE/SSRF/IDOR/Logic/Upload/GraphQL/WAF]
-         -> [5 Auth: JWT/OAuth]
-         -> [6 Deep/Exploit: fuzzing/AD/cloud (opsional)]
-         -> [7 Reporting: offensive-reporting] -> report/<tipe>_<target>_<ts>.md
-```
-
-Skill yang terlibat minimal: `offensive-osint`, `offensive-osint-methodology`, `offensive-fast-checking`, seluruh skill web layer assessment, `offensive-jwt`, `offensive-oauth`, `offensive-reporting` — plus skill deep saat kondisi sesuai. Semua workflow dieksekusi via interpreter venv WSL (`/mnt/d/Projects/ceh/ceh/bin/python`).
+Deliverable Requirements:
+1. **Executive Summary**: Business risk narrative tailored for C-level leadership.
+2. **CVSS Scoring**: Standard CVSS v3.1 / v4.0 vector string and justification.
+3. **Reproducible Proof of Concept**: Exact steps, redacted request/response dumps.
+4. **Remediation Plan**: Strategic hardening and tactical developer-level code fixes.

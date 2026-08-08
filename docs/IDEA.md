@@ -1,38 +1,50 @@
-# IDEA - Agentic AI Pentest
+# Framework Concept, Vision & Technical Roadmap
 
-## Masalah
+## 1. The Core Problem
 
-Pentest yang lengkap itu berulang dan berat: recon -> triage -> assessment per-attack-surface -> exploit -> reporting. Manual berarti context-switch antar puluhan teknik, tool, dan skill. AI agent tunggal tanpa struktur mudah lupa fase, melewatkan permukaan serangan, dan menghasilkan laporan yang tidak bisa dipertanggungjawabkan.
+Comprehensive penetration testing is inherently complex, multi-phase, and iterative:
+```
+Reconnaissance -> Fast Triage -> Surface Assessment -> Verification / PoC -> Reporting
+```
 
-## Ide
+In traditional manual assessments, analysts must constantly context-switch across dozens of attack methodologies, CLI tools, and specialized scripts. Conversely, monolithic AI agents operating without structured domain skills often lose phase context, miss critical attack surfaces, and produce unverified, non-standardized reports.
 
-**Multi-agent orchestrator di atas skill.** Setiap skill di `skills/` adalah "otak specialist" yang sudah berisi metodologi mendalam untuk satu permukaan serangan. Skema ini memetakan: 1 agent = 1+ skill + 1 workflow nyata (Prism CLI, SpiderFoot). Sebuah **Commander agent** menyusun rencana, meng-dispatch specialist yang tepat di fase yang tepat, lalu mengagregasi temuan menjadi laporan profesional.
+---
 
-Bukan membangun tool baru - tapi **mengorkestrasi yang sudah ada**: 58 skill methodology + 22 modul OSINT Prism + SpiderFoot.
+## 2. The Core Solution
 
-## Kenapa ini powerful
+**DMLab CEH** solves this challenge by decoupling high-level campaign orchestration from specialized technical execution:
 
-| Keuntungan | Penjelasan |
+1. **Standardized Specialist Skills**: Each skill in `skills/` is a granular, expert specification formatted for AI ingestion (`SKILL.md`).
+2. **Dynamic Commander Orchestrator**: An autonomous Commander builds an assessment Directed Acyclic Graph (DAG) based on the target type and dispatches specialists on demand.
+3. **Real-World Engine Integration**: Directly utilizes battle-tested OSINT engines ([Prism CLI](../tools/prism) and [SpiderFoot](../tools/spiderfoot)) without reinventing foundational tools.
+4. **Shared Blackboard**: Intermediate findings and evidence are synchronized in `results/` in standardized JSON format for downstream agents.
+
+---
+
+## 3. Key Advantages
+
+| Advantage | Technical Implementation |
 |---|---|
-| **Cakupan lengkap** | Setiap attack surface punya specialist: web, auth, AD, wireless, cloud, mobile, IoT, AI, exploit, fuzzing |
-| **Methodology yang dalam** | Agent tidak bergantung pada memori model - ia memuat SKILL.md spesialis saat dibutuhkan |
-| **Reusable** | Workflow nyata (Prism/SpiderFoot) dipanggil apa adanya; skill tidak diubah |
-| **Eskalasi berbasis bukti** | Temuan fase recon menentukan agent mana yang di-dispatch berikutnya |
-| **Auditable** | Evidence hygiene + timestamp per temuan -> laporan bisa dipertanggungjawabkan (CEH: penulisan laporan yang benar) |
+| **Comprehensive Coverage** | 58 specialized skills spanning Web, Auth, Active Directory, Wireless, Cloud, Mobile, IoT, Red Team, and Exploit Dev. |
+| **Deep Methodology** | Agents do not depend on generic LLM memory; they load curated `SKILL.md` playbooks at runtime. |
+| **Tooling Reuse** | Seamless execution of production OSINT tools via unified Python virtual environment. |
+| **Evidence-Driven Escalation** | Reconnaissance findings dynamically determine which specialized assessment subagent is dispatched next. |
+| **Auditable Deliverables** | Strict evidence hygiene, UTC timestamps, and standardized CVSS v3.1/v4.0 scoring. |
 
-## Visi
+---
 
-1. **v1 (sekarang)** - skema + mapping skill->agent->workflow terdokumentasi di `AGENTS.md`; Commander menjalankan alurnya secara manual/terpandu di agent mana pun (opencode, Claude Code, Cursor, dll).
-2. **v2** - folder `results/` sebagai blackboard terstruktur (engagement.json, findings per fase) agar orchestrator punya state antar sesi.
-3. **v3** - otomatisasi: Commander membaca `results/findings/*.json`, memutuskan eskalasi secara programatik, dan memicu reporting-agent otomatis.
-4. **v4** - API wrapper: orchestrator memanggil Prism/SpiderFoot via Python (bukan shell) agar bisa masuk CI/CD.
+## 4. Development Roadmap
 
-## Konteks Pembelajaran CEH
+- **v1 (Current Architecture)**: Multi-agent schema and skill-to-agent mapping documented in [`AGENTS.md`](AGENTS.md); Commander coordinates execution across Claude Code, OpenCode, Cursor, and Codex.
+- **v2 (Structured Blackboard)**: Standardized `results/` blackboard schema (`engagement.json`, findings per phase) providing persistent state across multi-day sessions.
+- **v3 (Programmatic Autonomous Escalation)**: Commander autonomously evaluates `results/findings/*.json` to dynamically trigger deep verification and reporting agents.
+- **v4 (Native API Wrappers)**: Native Python SDK integrating Prism, SpiderFoot, and custom scanners directly into CI/CD pipelines.
 
-Proyek ini juga alat belajar CEH: memaksa alur kerja yang benar (recon -> scanning -> Gaining Access -> Maintaining -> Covering Tracks -> Reporting) dan penggunaan metodologi standar industri (OWASP, CVSS) lewat skill `offensive-reporting`.
+---
 
-## Batasan & Etika
+## 5. Ethical Standards & Legal Disclaimer
 
-- Hanya untuk target dengan izin resmi (lab, CTF, bug bounty). No authz -> no execution.
-- Tidak mem-publish data target; semua output lokal di `results/`.
-- Dokumentasi ini dan seluruh skill ditujukan untuk **pengujian keamanan yang sah**.
+- Testing is strictly restricted to targets with verified, written authorization. **No authorization → strictly no execution.**
+- Target data and scan outputs (`report/`, `results/`) are strictly kept local and gitignored.
+- This documentation and all associated skills are published exclusively for **lawful security research, defensive engineering, and authorized penetration testing**.

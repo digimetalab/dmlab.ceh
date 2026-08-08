@@ -1,31 +1,41 @@
-# Security Policy — DMLab CEH
+# Security Policy & Vulnerability Disclosure
 
-## Konteks
+## 1. Scope & Context
 
-Project ini adalah workspace **etical hacking / CEH** — skill & dokumentasi untuk **pengujian keamanan yang sah**. Kontennya sensitif tapi legal: metodologi, checklist, dan workflow yang dipakai pentester profesional terhadap target dengan izin.
+**DMLab CEH** provides modular offensive security skills, methodologies, and multi-agent orchestration workflows designed exclusively for **lawful penetration testing, authorized red teaming, and defensive cybersecurity education**.
 
-## Pelaporan Kerentanan
+While the methodologies documented within this repository reflect real-world attack vectors, the project codebase itself (including installer scripts, orchestration schemas, reporting templates, and tooling integrations) must adhere to rigorous security and safety standards.
 
-Kode project (script `tools/src/`, installer, template, docs) bisa punya bug. Laporkan:
+---
 
-- **Email/issue:** laporkan via GitHub Issues dengan label `security`, atau hubungi maintainer repo.
-- **Sertakan:** langkah reproduksi, dampak, versi, file & baris yang terpengaruh.
-- **Jangan** mempublish PoC yang bisa menyakiti target riil di tempat umum.
+## 2. Reporting a Vulnerability
 
-## Scope Keamanan
+If you discover a security vulnerability or implementation flaw within this repository's codebase (such as in `tools/src/`, installer scripts, or templates), please report it responsibly:
 
-Yang kami perhatikan:
+- **Method**: Open a confidential security advisory on GitHub or contact the repository maintainers directly.
+- **Include**:
+  - Detailed reproduction steps.
+  - Potential impact and severity assessment.
+  - Affected files, commit hash, and line numbers.
+  - Suggested patch or mitigation (if available).
+- **Public Disclosure**: Please allow a reasonable remediation window (typically 90 days) before any public discussion or disclosure.
 
-1. **Script injection / path traversal** di `tools/src/*.sh` & installer `install_skills.sh` — mis. argumen user di-eval tanpa sanitasi.
-2. **Hardcoded secrets** — pastikan tidak ada credential/key di source.
-3. **Data target bocor** — pastikan `report/`, `results/` selalu gitignored dan tidak pernah di-commit.
-4. **Skill menyesatkan** — skill yang mengajarkan aktivitas ilegal/tanpa izin akan di-review dan dihapus/diarahkan ke upstream.
+---
 
-## Responsible Disclosure
+## 3. Areas of Primary Concern
 
-- Laporkan dulu ke maintainer sebelum publish.
-- Beri waktu wajar (≥ 90 hari) untuk perbaikan sebelum disclosure publik.
+1. **Script Security & Path Traversal**: Ensuring installer scripts (`tools/src/install_skills.py`, `.sh`) strictly sanitize inputs and prevent arbitrary file overwrites.
+2. **Credential & Secret Hygiene**: Ensuring zero hardcoded credentials, API tokens, or secrets exist within the repository source.
+3. **Target Data Containment**: Ensuring all client telemetry, findings, and reports remain strictly isolated in gitignored directories (`report/`, `results/`).
+4. **Methodology Integrity**: Reviewing skills to ensure they teach industry-standard, auditable ethical methodologies adhering strictly to legal testing boundaries.
 
-## Penggunaan
+---
 
-Konten repo **hanya untuk pengujian resmi**: bug bounty dengan scope tertulis, kontrak pentest, lab milik sendiri, atau CTF. Penyalahgunaan di luar itu bukan tanggung jawab project ini.
+## 4. Lawful Purpose & Compliance Disclaimer
+
+All content in this repository is provided for authorized testing only:
+- Documented Bug Bounty programs with explicit scope.
+- Professional penetration testing engagements under signed client contracts.
+- Private cybersecurity laboratories and CTF competitions.
+
+The maintainers assume no liability for misuse or actions performed without explicit, documented authorization.

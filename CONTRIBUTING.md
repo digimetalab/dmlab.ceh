@@ -1,43 +1,48 @@
-# Contributing — DMLab CEH
+# Contributing Guidelines
 
-Terima kasih sudah berkontribusi. Project ini workspace pentest/OSINT yang **hanya untuk pengujian keamanan yang sah** (izin tertulis, lab, CTF, bug bounty resmi).
+Thank you for contributing to **DMLab CEH**. This repository provides an ethical hacking and multi-agent orchestration framework strictly designed for **lawful security research and authorized penetration testing**.
 
-## Siapa Bisa Berkontribusi?
+---
 
-Semua orang — red/white/blue team, pembelajar CEH, developer tooling. Prasyarat: hormati etika & scope.
+## 1. Contribution Scope
 
-## Jenis Kontribusi
+We welcome contributions from security analysts, red/purple/blue teamers, and AI tool developers:
 
-| Jenis | Lokasi |
+| Contribution Category | Target Directory |
 |---|---|
-| Fix dokumen (typo, path, instruksi) | `README.md`, `WORKFLOW.md`, `AGENTS.md`, dll |
-| Script pendukung baru | `tools/src/` |
-| Template laporan | `template/` |
-| Manajemen/tata kelola | `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, `PROJECT-MANAGEMENT.md` |
-| Skill baru / perbaikan skill | **Bukan di repo ini** — skill bersumber dari `source/Claude-Red` (upstream). Perbaikan skill diajukan ke upstream, lalu disinkronkan ke sini. |
+| Documentation & Architecture Fixes | `README.md`, `docs/`, `SECURITY.md` |
+| Automation & Cross-Platform Utilities | `tools/src/` (Python scripts and POSIX shell wrappers) |
+| Standardized Report Templates | `template/` |
+| Framework Governance & Specs | `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md` |
 
-## Alur
+---
 
-1. **Fork & clone** repo, buat branch: `git checkout -b fix/<deskripsi>` atau `feat/<deskripsi>`.
-2. **Ubah** hanya SOURCE — jangan sentuh kondisi terinstall (`report/`, `results/`, `source/`, `.agents/`, `graphify-out/`, `ceh/`). Jangan ubah isi gitlink `tools/prism` / `tools/spiderfoot` (kontennya berasal dari repo upstream, bukan project ini).
-3. **Verifikasi**:
-   - Path & perintah di docs benar (jalankan jika memungkinkan).
-   - Script bash lolos `bash -n`.
-   - Skill byte-identical dengan upstream (jika menyentuh sinkronisasi skill).
-4. **Commit** dengan pesan jelas (Conventional Commits disarankan), mis. `docs: fix prism path di WORKFLOW`.
-5. **Push & buat PR** ke `origin/master`.
+## 2. Contribution Workflow
 
-## Aturan Non-Negosiasi
+1. **Fork & Clone**: Fork the repository and create a descriptive feature branch:
+   ```bash
+   git checkout -b feat/enhance-installer
+   # or
+   git checkout -b fix/workflow-documentation
+   ```
+2. **Modify Only Source Files**:
+   - Only modify source assets (`skills/`, `tools/src/`, `template/`, `docs/`).
+   - Never modify or commit local runtime artifacts (`report/`, `results/`, `.agents/`, `.venv/`, `graphify-out/`).
+   - Do not commit changes inside submodule directories (`tools/prism/`, `tools/spiderfoot/`) unless contributing upstream.
+3. **Validate Code & Syntax**:
+   - Python code must be formatted and clean (`python -m py_compile tools/src/*.py`).
+   - Shell scripts must pass syntax checks (`bash -n tools/src/*.sh`).
+   - All internal markdown links must be valid.
+4. **Commit with Conventional Messages**:
+   - Example: `feat: add parallel skill verification to install_skills.py`
+   - Example: `docs: update attack surface mapping in docs/MINDMAP.md`
+5. **Open a Pull Request**: Submit the PR to the `master` branch with a clear description of your changes.
 
-- **No authz → no execution.** Tidak ada konten yang mendorong aktivitas ilegal/tanpa izin.
-- **No target data.** Jangan commit `report/` / `results/` / data target apa pun.
-- **Jangan ubah skill langsung di repo ini** — sinkronisasi dari upstream, bukan fork manual.
-- **Tidak ada secret.** Jangan commit `.env`, key, credential.
+---
 
-## Checklist PR
+## 3. Non-Negotiable Standards
 
-- [ ] Hanya menyentuh source (`skills/`, `tools/src/`, `template/`, docs).
-- [ ] Path tool benar (`tools/prism`, `tools/spiderfoot`, `tools/src/...`).
-- [ ] Tidak ada perubahan pada `.gitignore` yang membuat artifact dev ke-track.
-- [ ] CHANGELOG di-update (bagian `[Unreleased]`).
-- [ ] Bahasa konsisten (docs: Indonesia; kode/commit: Inggris atau Indonesia).
+- **Strict Authorization:** No content may encourage or facilitate unauthorized or unlawful testing.
+- **Zero Target Data:** Never commit target metadata, client credentials, or raw findings from `results/` or `report/`.
+- **Zero Hardcoded Secrets:** Never commit `.env` files, API keys, or private tokens.
+- **Immaculate Git Hygiene:** Ensure that gitignored directories remain untracked.
