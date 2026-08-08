@@ -148,25 +148,25 @@ python tools/src/install_skills.py
 
 ## 🎯 58 Standardized Skills Catalog
 
-The skill catalog provides specialized knowledge modules formatted for direct AI ingestion:
+All 58 specialized offensive security skills are maintained as standardized `SKILL.md` specifications in the [`skills/`](skills/) source directory and installed locally to [`.agents/skills/`](.agents/skills/):
 
-| Domain | Count | Covered Skills |
+| Domain / Category | Count | Direct Links to Skills Source (`skills/**/SKILL.md`) |
 |---|:---:|---|
-| **Web Applications** | 16 | `sqli`, `xss`, `ssrf`, `ssti`, `xxe`, `idor`, `file-upload`, `rce`, `deserialization`, `race-condition`, `request-smuggling`, `open-redirect`, `parameter-pollution`, `graphql`, `waf-bypass`, `business-logic` |
-| **Authentication & IAM** | 2 | `jwt`, `oauth` |
-| **Active Directory** | 1 | `active-directory` (Kerberoasting, AS-REP Roasting, ACL Abuse, ADCS, Lateral Movement) |
-| **Wireless & RF** | 14 | `wifi`, `wifi-recon`, `wpa2-psk`, `wpa3-sae`, `wpa-enterprise`, `wps`, `evil-twin`, `krack-fragattacks`, `deauth-disassoc`, `bluetooth-ble`, `bluetooth-classic`, `zigbee-thread-matter`, `z-wave`, `lorawan-sub-ghz` |
-| **Cloud Security** | 1 | `cloud` (AWS, Azure, GCP IAM escalation, IMDS, exfiltration) |
-| **Mobile Security** | 1 | `mobile` (Android & iOS static/dynamic analysis, Frida, IPC redirection) |
-| **IoT & Hardware** | 1 | `iot` (Firmware analysis, UART/JTAG, hardware protocols) |
-| **Infrastructure & Red Team** | 7 | `initial-access`, `advanced-redteam`, `edr-evasion`, `shellcode`, `keylogger-arch`, `windows-mitigations`, `windows-boundaries` |
-| **Exploit Development** | 6 | `exploit-development`, `exploit-dev-course`, `basic-exploitation`, `crash-analysis`, `mitigations`, `toctou` |
-| **Fuzzing & Vulnerability Research** | 4 | `fuzzing`, `fuzzing-course`, `bug-identification`, `vuln-classes` |
-| **OSINT & Intelligence** | 2 | `osint`, `osint-methodology` |
-| **AI Security** | 1 | `ai-security` (Prompt injection, jailbreaking, model extraction) |
-| **Core Utilities** | 2 | `fast-checking`, `reporting` (CVSS v3.1/v4.0 scoring, evidence hygiene) |
+| **Web Applications & APIs** | 16 | [`sqli`](skills/offensive-sqli/SKILL.md), [`xss`](skills/offensive-xss/SKILL.md), [`ssrf`](skills/offensive-ssrf/SKILL.md), [`ssti`](skills/offensive-ssti/SKILL.md), [`xxe`](skills/offensive-xxe/SKILL.md), [`idor`](skills/offensive-idor/SKILL.md), [`file-upload`](skills/offensive-file-upload/SKILL.md), [`rce`](skills/offensive-rce/SKILL.md), [`deserialization`](skills/offensive-deserialization/SKILL.md), [`race-condition`](skills/offensive-race-condition/SKILL.md), [`request-smuggling`](skills/offensive-request-smuggling/SKILL.md), [`open-redirect`](skills/offensive-open-redirect/SKILL.md), [`parameter-pollution`](skills/offensive-parameter-pollution/SKILL.md), [`graphql`](skills/offensive-graphql/SKILL.md), [`waf-bypass`](skills/offensive-waf-bypass/SKILL.md), [`business-logic`](skills/offensive-business-logic/SKILL.md) |
+| **Authentication & IAM** | 2 | [`jwt`](skills/offensive-jwt/SKILL.md), [`oauth`](skills/offensive-oauth/SKILL.md) |
+| **Active Directory & Enterprise** | 1 | [`active-directory`](skills/offensive-active-directory/SKILL.md) *(Kerberoasting, AS-REP Roasting, ACL Abuse, ADCS, Lateral Movement)* |
+| **Wireless, RF & Physical IoT** | 14 | [`wifi`](skills/offensive-wifi/SKILL.md), [`wifi-recon`](skills/offensive-wifi-recon/SKILL.md), [`wpa2-psk`](skills/offensive-wpa2-psk/SKILL.md), [`wpa3-sae`](skills/offensive-wpa3-sae/SKILL.md), [`wpa-enterprise`](skills/offensive-wpa-enterprise/SKILL.md), [`wps`](skills/offensive-wps/SKILL.md), [`evil-twin`](skills/offensive-evil-twin/SKILL.md), [`krack-fragattacks`](skills/offensive-krack-fragattacks/SKILL.md), [`deauth-disassoc`](skills/offensive-deauth-disassoc/SKILL.md), [`bluetooth-ble`](skills/offensive-bluetooth-ble/SKILL.md), [`bluetooth-classic`](skills/offensive-bluetooth-classic/SKILL.md), [`zigbee-thread-matter`](skills/offensive-zigbee-thread-matter/SKILL.md), [`z-wave`](skills/offensive-z-wave/SKILL.md), [`lorawan-sub-ghz`](skills/offensive-lorawan-sub-ghz/SKILL.md) |
+| **Cloud Security** | 1 | [`cloud`](skills/offensive-cloud/SKILL.md) *(AWS, Azure, GCP IAM escalation, IMDSv2, S3/Blob exfiltration)* |
+| **Mobile Security** | 1 | [`mobile`](skills/offensive-mobile/SKILL.md) *(Android APK & iOS IPA static/dynamic analysis, Frida, IPC redirection)* |
+| **IoT & Embedded Hardware** | 1 | [`iot`](skills/offensive-iot/SKILL.md) *(Firmware extraction, UART/JTAG, SPI/I2C flash dumps, RTOS)* |
+| **Infrastructure & Red Team** | 7 | [`initial-access`](skills/offensive-initial-access/SKILL.md), [`advanced-redteam`](skills/offensive-advanced-redteam/SKILL.md), [`edr-evasion`](skills/offensive-edr-evasion/SKILL.md), [`shellcode`](skills/offensive-shellcode/SKILL.md), [`keylogger-arch`](skills/offensive-keylogger-arch/SKILL.md), [`windows-mitigations`](skills/offensive-windows-mitigations/SKILL.md), [`windows-boundaries`](skills/offensive-windows-boundaries/SKILL.md) |
+| **Exploit Development** | 6 | [`exploit-development`](skills/offensive-exploit-development/SKILL.md), [`exploit-dev-course`](skills/offensive-exploit-dev-course/SKILL.md), [`basic-exploitation`](skills/offensive-basic-exploitation/SKILL.md), [`crash-analysis`](skills/offensive-crash-analysis/SKILL.md), [`mitigations`](skills/offensive-mitigations/SKILL.md), [`toctou`](skills/offensive-toctou/SKILL.md) |
+| **Fuzzing & Vulnerability Research** | 4 | [`fuzzing`](skills/offensive-fuzzing/SKILL.md), [`fuzzing-course`](skills/offensive-fuzzing-course/SKILL.md), [`bug-identification`](skills/offensive-bug-identification/SKILL.md), [`vuln-classes`](skills/offensive-vuln-classes/SKILL.md) |
+| **OSINT & Intelligence** | 2 | [`osint`](skills/offensive-osint/SKILL.md), [`osint-methodology`](skills/offensive-osint-methodology/SKILL.md) |
+| **AI & LLM Security** | 1 | [`ai-security`](skills/offensive-ai-security/SKILL.md) *(Prompt injection, jailbreaking, RAG poisoning, model extraction)* |
+| **Audit, Fast Triage & Utilities** | 2 | [`fast-checking`](skills/offensive-fast-checking/SKILL.md), [`reporting`](skills/offensive-reporting/SKILL.md) *(CVSS v3.1/v4.0 scoring, deliverable synthesis)* |
 
-👉 *For detailed descriptions, MITRE ATT&CK references, and OWASP Top 10 mappings, review [MINDMAP.md](docs/MINDMAP.md).*
+👉 *For full methodology walkthroughs, MITRE ATT&CK tactical matrices, and OWASP Top 10 cross-references, see [docs/MINDMAP.md](docs/MINDMAP.md).*
 
 ---
 
