@@ -24,22 +24,25 @@ cd dmlab.ceh
 
 ---
 
-## 3. Setup Virtualenv Lokal `.venv/`
+## 3. Setup Virtualenv Lokal `.venv/` & Install Dependensi
 
-Buat `.venv/` di root project (gitignored, tidak menyentuh global):
+Buat `.venv/` di root project dan pasang seluruh dependensi tools (Prism, SpiderFoot, reporting, dsb.):
 
 ```bash
 # Linux / macOS:
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
 
 # Windows (PowerShell):
-py -3 -m venv .venv
+python -m venv .venv
 .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 
 # Windows (Command Prompt):
 python -m venv .venv
 .venv\Scripts\activate.bat
+pip install -r requirements.txt
 
 # Verifikasi
 python --version
@@ -47,9 +50,9 @@ python --version
 
 ---
 
-## 4. Setup Otomatis (One-command)
+## 4. Setup Skills ke Agent Lokal
 
-Jalankan installer yang: tarik gitlink tools, install dependency, install 58 skill ke `.agents/` **lokal project**:
+Jalankan installer untuk memasang 58 skill ke `.agents/skills/` **lokal project**:
 
 ```bash
 # Linux / macOS / WSL:
@@ -61,22 +64,17 @@ Jalankan installer yang: tarik gitlink tools, install dependency, install 58 ski
 .\tools\src\install_skills.ps1            # install
 ```
 
-> **Catatan:** Default installer menyalin skill ke `.agents/skills/` **di dalam project ini** (lokal), bukan ke `~/.claude/skills` global. Orang yang clone project ini langsung mendapat skill tanpa menyentuh environment global.
+> **Catatan:** Default installer menyalin skill ke `.agents/skills/` **di dalam project ini** (lokal), bukan ke environment global. Orang yang clone project ini langsung mendapat skill siap pakai.
 
 ---
 
-## 5. Install Tooling (Manual / Step-by-step)
+## 5. Submodule Tooling (Prism & SpiderFoot)
 
-Jika ingin manual (bukan pakai installer di atas):
+Pastikan submodule tools pendukung telah diinisialisasi:
 
 ```bash
-# 1. Tarik gitlink Prism & SpiderFoot
+# Tarik isi repo submodule (Prism & SpiderFoot)
 git submodule update --init --recursive
-
-# 2. Install dependency SpiderFoot ke .venv/
-pip install -r tools/spiderfoot/requirements.txt
-
-# 3. (Opsional) Prism biasanya tidak butuh pip install tambahan
 ```
 
 ---
@@ -114,7 +112,7 @@ pip install -r tools/spiderfoot/requirements.txt
 
 | Dokumen | Isi |
 |---|---|
-| [README.md](README.md) | Gambaran project, model terinstall-vs-source, quick start |
+| [README.md](../README.md) | Gambaran project, model terinstall-vs-source, quick start |
 | [AGENTS.md](AGENTS.md) | Arsitektur multi-agent pentest (Commander schema, skill mapping, escalation) |
 | [WORKFLOW.md](WORKFLOW.md) | Alur pentest website 8 fase end-to-end |
 | [MINDMAP.md](MINDMAP.md) | Peta coverage skill per attack surface |

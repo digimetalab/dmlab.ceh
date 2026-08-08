@@ -158,11 +158,8 @@ Semua dependency di-install ke `.venv/` lokal project, bukan global.
 # Linux/macOS:
 source .venv/bin/activate
 
-# Install di dalam venv project
-pip install <package>
-
-# Contoh: dependency SpiderFoot
-pip install -r tools/spiderfoot/requirements.txt
+# Install seluruh dependensi tools di dalam venv project
+pip install -r requirements.txt
 
 # Tool CLI yang diinstal via pip, panggil langsung dari venv
 python -m tool_name ...

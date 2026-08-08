@@ -13,6 +13,8 @@ Semua perubahan signifikan di DMLab CEH dicatat di sini. Format mengikuti [Keep 
 - **`MINDMAP.md`** — peta coverage 58 skill per attack surface + cross-reference OWASP/MITRE.
 - **`ONBOARDING.md`** — panduan setup lengkap cross-platform (`.venv/`, gitlink, dependency, install skills lokal).
 - **`PROJECT-MANAGEMENT.md`** — manajemen engagement, escalation rules, evidence hygiene, blackboard, git hygiene.
+- **Unified `requirements.txt` di root** — menggabungkan seluruh dependensi library Python lintas tools (`tools/prism`, `tools/spiderfoot`, reporting & core utilities) ke dalam satu file instalasi tunggal di root repository.
+- **Restrukturisasi folder `docs/`** — dokumen teknis (`AGENTS.md`, `WORKFLOW.md`, `ONBOARDING.md`, `MINDMAP.md`, `PROJECT-MANAGEMENT.md`, `IDEA.md`) dirapikan ke dalam direktori `docs/` untuk menjaga kerapian root workspace.
 - **`CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`** — dokumen tata kelola project.
 
 ### Changed

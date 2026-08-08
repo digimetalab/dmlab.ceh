@@ -1,219 +1,142 @@
-# DMLab CEH — Agentic AI Pentest & OSINT Workspace
+# DMLab CEH — Agentic AI Pentest & OSINT Framework
 
-Workspace untuk belajar **CEH (Certified Ethical Hacker)** dan membangun **agentic AI pentest** yang mengorkestrasi skill + tooling OSINT. Berjalan di atas **58 skill offensive security** (format `SKILL.md`, agnostic terhadap AI agent) + workflow nyata (Prism CLI, SpiderFoot).
+Framework pembelajaran **CEH (Certified Ethical Hacker)** dan orkestrasi **Agentic AI Pentesting** berbasis **58 standard skills** (format `SKILL.md`, agent-agnostic) serta integrasi tooling OSINT (Prism CLI, SpiderFoot).
 
-> **Penting:** Gunakan hanya untuk target yang sudah Anda miliki izin tertulis (lab, CTF, bug bounty resmi). Lihat [AGENTS.md](AGENTS.md) bagian Authorization. Dokumen & skill ini untuk **pengujian keamanan yang sah**.
-
----
-
-## Model "Terinstall vs Source"
-
-Project ini membedakan dua kondisi:
-
-| Kondisi | Lokasi | Di GitHub? | Contoh |
-|---|---|---|---|
-| **TERINSTALL (dev/local)** | `.agents/`, `.venv/`, `report/`, `results/`, `graphify-out/`, `source/` | ❌ gitignored | skill ter-install di project, venv Python, laporan & data target, repo vendor yang di-clone |
-| **SOURCE (milik project)** | `skills/`, `tools/src/`, `tools/prism`*, `tools/spiderfoot`*, `template/`, docs | ✅ di-commit | skill library, script pendukung, template report, dokumentasi |
-
-\* `tools/prism` & `tools/spiderfoot` di-track sebagai **gitlink** (submodule embedded): kontennya tidak ikut di-commit, tetapi referensi versi tercatat. Clone lalu `git submodule update --init` atau clone manual ke path tersebut.
-
-Saat agent (opencode/Claude/Cursor) berjalan, ia meng-install/menyalin skill ke `.agents/` secara lokal — **boleh ada di local, jangan di-commit**. `source/` menampung repo pihak ketiga yang di-clone untuk dipelajari (mis. `source/Claude-Red`). Keduanya aman di `.gitignore`.
+> **Pemberitahuan Kepatuhan & Etika:**
+> Workspace ini dirancang khusus untuk keperluan edukasi, riset keamanan, dan **pengujian keamanan yang sah** (lab sendiri, CTF, dan program bug bounty / kontrak pentest dengan otorisasi tertulis). Penggunaan tanpa izin terhadap target di luar scope dilarang keras.
 
 ---
 
-## Struktur Folder
+## Ringkasan Struktur Workspace
 
 ```
 dmlab.ceh/
-├── skills/                    # 58 skill offensive security (source, di-commit)
-│   ├── offensive-sqli/SKILL.md
-│   ├── offensive-xss/SKILL.md
-│   ├── offensive-file-upload/SKILL.md
-│   └── ...                    # (13 kategori coverage, lihat MINDMAP)
+├── docs/                      # Dokumentasi lengkap & arsitektur
+│   ├── AGENTS.md              # Arsitektur Multi-Agent (Commander & Specialist)
+│   ├── WORKFLOW.md            # Alur kerja pentest 8-fase end-to-end
+│   ├── ONBOARDING.md          # Panduan instalasi dan setup lengkap
+│   ├── MINDMAP.md             # Peta cakupan 58 skill & referensi standar
+│   ├── PROJECT-MANAGEMENT.md  # Manajemen engagement & evidence hygiene
+│   └── IDEA.md                # Visi & arsitektur teknis
+├── skills/                    # Library 58 standard skills (Source of Truth)
 ├── tools/
-│   ├── prism/                 # Paket OSINT self-hosted (gitlink)
-│   ├── spiderfoot/            # Paket SpiderFoot (gitlink)
-│   └── src/                   # Script pendukung (bash/python one-off, di-commit)
-├── template/                  # Template laporan (di-commit)
-├── report/                    # Laporan pentest/OSINT (terinstall, gitignored)
-├── results/                   # Blackboard findings (terinstall, gitignored)
-├── source/                    # Repo vendor yang di-clone untuk studi (terinstall, gitignored)
-├── .venv/                     # Python virtualenv lokal (terinstall, gitignored)
-├── .agents/                   # Skill ter-install saat setup (terinstall, gitignored)
-├── AGENTS.md                  # Arsitektur multi-agent pentest (Commander schema)
-├── WORKFLOW.md                # Alur pentest website lengkap (fase 0-7)
-├── ONBOARDING.md              # Panduan mulai pakai project ini
-├── MINDMAP.md                 # Peta coverage skill per attack surface
-├── PROJECT-MANAGEMENT.md      # Manajemen engagement & task
-└── IDEA.md                    # Visi & ide di balik project
+│   ├── prism/                 # OSINT & Footprinting Engine (Git Submodule)
+│   ├── spiderfoot/            # OSINT Automation Engine (Git Submodule)
+│   └── src/                   # Script otomasi instalasi & helper
+├── template/                  # Template pelaporan teknis (TEMPLATE.md)
+├── report/                    # Direktori deliverable laporan (Lokal / Gitignored)
+├── results/                   # Shared blackboard hasil temuan (Lokal / Gitignored)
+├── .agents/                   # Target instalasi skill lokal project (Gitignored)
+└── .venv/                     # Python Virtual Environment lokal (Gitignored)
 ```
-
-## Konvensi Penamaan Report
-
-Semua laporan disimpan di `report/` (gitignored) dengan format:
-
-```
-report/<tipe>_<namatarget>_<yyyymmdd>_<hhmm>.md
-```
-
-- **tipe** — kategori target: `web`, `person`, `domain`, `ip`, `email`, `phone`, `username`, `wireless`, `infra`, dst.
-- **namatarget** — nama target (tanpa karakter aneh, tanpa ekstensi), mis. `bprlestaribali`, `cgyudistira`.
-- **yyyymmdd_hhmm** — timestamp lokal saat report dibuat.
-
-Contoh:
-
-```
-report/web_bprlestaribali_20260808_0743.md
-report/person_cgyudistira_20260808_0743.md
-report/domain_example-com_20260808_1005.md
-```
-
-Template tersedia di `template/TEMPLATE.md`.
 
 ---
 
-## Quick Start
+## Alur Instalasi & Setup Cepat
 
-Project ini **cross-platform** (Windows, Linux, macOS). Semua dependensi di-install ke virtualenv lokal project **`.venv/`** — tidak pernah global.
+Framework ini **cross-platform** (Windows, Linux, macOS) dan menerapkan isolasi penuh (semua dependensi terpasang lokal di project tanpa mengotori sistem global).
 
-### 0. Setup (satu kali)
+### 1. Inisialisasi Repositori & Tooling
+
+Tarik repository beserta submodule tools pendukung:
 
 ```bash
-# 1. Tarik gitlink tools (Prism, SpiderFoot)
-git submodule update --init --recursive
+git clone --recurse-submodules https://github.com/digimetalab/dmlab.ceh.git
+cd dmlab.ceh
+```
 
-# 2. Buat virtualenv lokal + install skills ke .agents project
-python3 -m venv .venv          # Linux/macOS
-# atau:  py -3 -m venv .venv   # Windows
-# atau:  python -m venv .venv   # Windows (jika py launcher tak ada)
+*(Jika sudah ter-clone tanpa `--recurse-submodules`, jalankan: `git submodule update --init --recursive`)*
 
-# Windows:
-.venv\Scripts\activate
-# Linux/macOS:
+### 2. Konfigurasi Virtual Environment (`.venv`) & Dependensi
+
+**Linux / macOS:**
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
-
-pip install -r tools/spiderfoot/requirements.txt
-
-# 3. Install 58 skill ke .agents/ project (lokal, bukan global)
-./tools/src/install_skills.sh
+pip install -r requirements.txt
 ```
 
-> **Prinsip:** `.venv/` dan `.agents/` = kondisi terinstall lokal project, gitignored. Tidak ada yang menyentuh environment global.
-
-### 1. Install skills ke agent Anda
-
-Installer default menyalin skill ke `.agents/` **di dalam project ini** (lokal), agar orang yang clone project ini langsung mendapat skill tanpa menyentuh global:
-
-```bash
-./tools/src/install_skills.sh                     # ke .agents/ project (lokal)
-./tools/src/install_skills.sh --only offensive-sqli offensive-xss   # subset
-./tools/src/install_skills.sh --dry-run           # preview tanpa install
-./tools/src/install_skills.sh --dir <path>        # target kustom
-./tools/src/install_skills.sh --global            # (opsional) ke agent global
+**Windows (PowerShell):**
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-Format `SKILL.md` (YAML frontmatter `name` + `description`) didukung **Claude Code, opencode, Cursor, Codex**, dan agent lain.
+### 3. Instalasi Skills ke Agent Lokal
 
-### 2. Recon OSINT via Prism CLI
+Pasang 58 skills langsung ke direktori lokal project (`.agents/skills/`):
 
-```bash
-# pastikan gitlink tools/prism sudah ditarik (step 0.1)
-cd tools/prism
-python cli.py scan example.com --type domain --json --verbose
-python cli.py scan example.com --html
-python cli.py scan someone@example.com --type email --json
-python cli.py scan cgyudistira --type username --json
-```
-
-### 3. Recon via SpiderFoot
-
-```bash
-# step 0.2 sudah install dependency-nya ke .venv
-cd tools/spiderfoot
-python sf.py -s example.com -u all -o json
-
-# list modul
-python sf.py -M
-```
-
-### 4. Multi-agent pentest
-
-Ikuti skema di [AGENTS.md](AGENTS.md):
-
-1. **Commander agent** — terima target, validasi izin, susun rencana.
-2. **Recon agents** — jalankan Prism CLI + SpiderFoot untuk footprint.
-3. **Assessment agents** — load skill sesuai permukaan serangan (SQLi, XSS, SSRF, ...).
-4. **Reporting agent** — susun laporan (CVSS, bukti, remediasi) via skill `offensive-reporting`.
-
-Sebut topiknya di perintah (contoh: "tes SQL injection") dan skill terkait akan di-load.
-
-### 5. Pentest website lengkap
-
-Ikuti [WORKFLOW.md](WORKFLOW.md) — pipeline 8 fase dari izin → recon → triage → assessment per-attack-surface → auth → exploit → reporting, memaksimalkan pemakaian skill.
-
----
-
-## Skill Library (58)
-
-Semua skill memakai format standar `SKILL.md`:
-
-```yaml
----
-name: offensive-sqli
-description: "..."
----
-```
-
-| Kategori | Skill |
-|---|---|
-| **Web (16)** | sqli, xss, ssrf, ssti, xxe, idor, file-upload, rce, deserialization, race-condition, request-smuggling, open-redirect, parameter-pollution, graphql, waf-bypass, business-logic |
-| **Auth (2)** | jwt, oauth |
-| **Active Directory (1)** | active-directory |
-| **Wireless (14)** | wifi, wifi-recon, wpa2-psk, wpa3-sae, wpa-enterprise, wps, evil-twin, krack-fragattacks, deauth-disassoc, bluetooth-ble, bluetooth-classic, zigbee-thread-matter, z-wave, lorawan-sub-ghz |
-| **Cloud (1)** | cloud |
-| **Mobile (1)** | mobile |
-| **IoT (1)** | iot |
-| **Infrastructure (7)** | initial-access, advanced-redteam, edr-evasion, shellcode, keylogger-arch, windows-mitigations, windows-boundaries |
-| **Exploit Dev (6)** | exploit-development, exploit-dev-course, basic-exploitation, crash-analysis, mitigations, toctou |
-| **Fuzzing (4)** | fuzzing, fuzzing-course, bug-identification, vuln-classes |
-| **Recon (2)** | osint, osint-methodology |
-| **AI (1)** | ai-security |
-| **Utility (2)** | fast-checking, reporting |
-
-Coverage per attack surface dengan referensi OWASP/MITRE: lihat [MINDMAP.md](MINDMAP.md).
-
----
-
-## Workflow yang Tersedia
-
-> Aktifkan venv dulu (`.venv`), lalu jalankan dari folder tool. Path relatif ke `tools/prism` / `tools/spiderfoot`.
-
-| Workflow | Perintah (setelah `cd tools/prism` / `cd tools/spiderfoot`) | Output |
-|---|---|---|
-| Prism scan domain/IP/email/phone/username/telegram | `python cli.py scan <target> --type <t>` | JSON/HTML/PDF |
-| Prism scheduled re-scan | `python cli.py watchlist add <target> --interval 6` | entri watchlist |
-| SpiderFoot footprint | `python sf.py -s <target> -u all -o json` | tab/CSV/JSON |
-| Prism web dashboard | `docker compose up --build` (di `tools/prism`) | http://localhost |
-
----
-
-## Catatan Environment
-
-- **Cross-platform** — berjalan di Windows, Linux, dan macOS. Tidak bergantung pada WSL.
-- Virtualenv lokal di **`.venv/`** (gitignored). Python 3.8+ disarankan (Prism & SpiderFoot mendukung Python 3).
-- Aktifkan venv lalu jalankan semua perintah Python dari dalamnya:
-  - Windows: `.venv\Scripts\activate`
-  - Linux/macOS: `source .venv/bin/activate`
-- Dependency tool di-install ke `.venv/`, tidak pernah global:
+- **Linux / macOS / WSL:**
   ```bash
-  pip install -r tools/spiderfoot/requirements.txt
+  ./tools/src/install_skills.sh
   ```
-- Semua setup otomatis bisa dicek via [ONBOARDING.md](ONBOARDING.md).
+
+- **Windows (PowerShell):**
+  ```powershell
+  .\tools\src\install_skills.ps1
+  ```
 
 ---
 
-## Etika & Batasan
+## Alur Kerja Multi-Agent (Agentic Workflow)
 
-- Hanya untuk target dengan izin resmi (lab, CTF, bug bounty). **No authz → no execution.**
-- Tidak mem-publish data target; semua output lokal di `report/` & `results/` (gitignored).
-- Dokumentasi dan seluruh skill ditujukan untuk **pengujian keamanan yang sah**.
+Arsitektur agentic framework ini memisahkan peran antara **Commander (Orchestrator)** dan **Specialist Agents**:
+
+```
++----------------------------------------------------------------+
+|                   COMMANDER (Orchestrator)                     |
+|  1. Scope & Auth Check -> 2. Build DAG Plan -> 3. Dispatch     |
++-------------------------------+--------------------------------+
+                                |
+        +-----------------------+-----------------------+
+        v                       v                       v
++---------------+       +---------------+       +---------------+
+|     RECON     |       |  ASSESSMENT   |       | DEEP EXPLOIT  |
+|  OSINT Agents |  -->  |  Vuln Agents  |  -->  | Specialized   |
++---------------+       +---------------+       +---------------+
+        |                       |                       |
+        +-----------------------+-----------------------+
+                                v
+                    +-----------------------+
+                    |    REPORTING AGENT    |
+                    |  Hasil -> Markdown/PDF|
+                    +-----------------------+
+```
+
+1. **Commander Agent**: Menganalisis intent, memvalidasi otorisasi target, dan menyusun rencana pengujian (DAG).
+2. **Reconnaissance**: Menjalankan pengumpulan informasi permukaan serangan via Prism & SpiderFoot.
+3. **Targeted Assessment**: Mengaktifkan specialist agent sesuai temuan (SQLi, XSS, Auth, API, Wireless, Cloud, dsb.).
+4. **Shared Blackboard (`results/`)**: Menyimpan temuan antar-agent secara terstruktur dalam format JSON.
+5. **Reporting**: Mengompilasi laporan akhir berstandar CVSS v3.1/v4.0 dan panduan remediasi ke direktori `report/`.
+
+---
+
+## Cakupan Skill Library (58 Skills)
+
+| Kategori | Jumlah | Cakupan Area |
+|---|---|---|
+| **Web Application** | 16 | SQLi, XSS, SSRF, SSTI, XXE, IDOR, File Upload, RCE, Deserialization, Race Condition, Smuggling, Open Redirect, Parameter Pollution, GraphQL, WAF Bypass, Business Logic |
+| **Authentication & IAM** | 2 | JWT, OAuth 2.0 |
+| **Active Directory** | 1 | Kerberoasting, ASREPRoasting, ACL Abuse, AD CS, Lateral Movement |
+| **Wireless & RF** | 14 | Wi-Fi Recon, WPA2/WPA3, Enterprise (802.1X), Evil Twin, Bluetooth BLE/Classic, Zigbee, LoRaWAN, Z-Wave |
+| **Infrastructure & Cloud** | 8 | Cloud Security, Initial Access, Red Team Ops, EDR Evasion, Shellcode, Windows Internals |
+| **Vulnerability Research** | 10 | Exploit Development, Crash Analysis, Fuzzing, Vuln Classes, TOCTOU |
+| **OSINT & Recon** | 2 | OSINT Methodology, Intelligence Gathering |
+| **AI & Utilities** | 5 | AI Security, Fast Triage, Reporting & Evidence Hygiene |
+
+Lihat pemetaan lengkap dan matriks OWASP/MITRE pada [MINDMAP.md](docs/MINDMAP.md).
+
+---
+
+## Dokumentasi Terkait
+
+- [Panduan Onboarding & Setup Detail](docs/ONBOARDING.md)
+- [Arsitektur & Skema Agent Multi-Layer](docs/AGENTS.md)
+- [Alur Kerja Pentest 8-Fase](docs/WORKFLOW.md)
+- [Tata Kelola Manajemen Project & Bukti](docs/PROJECT-MANAGEMENT.md)
+- [Peta Navigasi & Hubungan Skill](docs/MINDMAP.md)
+- [Konsep & Visi Teknis Framework](docs/IDEA.md)
+- [Kebijakan Keamanan (Security Policy)](SECURITY.md)
+- [Panduan Kontribusi](CONTRIBUTING.md)
+- [Riwayat Perubahan (Changelog)](CHANGELOG.md)
