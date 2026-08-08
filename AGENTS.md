@@ -1,27 +1,39 @@
-# Agent Configuration & Workspace Bootstrap Rules
+# Agent Configuration & Pre-Flight Workspace Bootstrap Protocol
 
-This file is automatically ingested by AI coding agents (Claude Code, OpenCode, Codex, Cursor, Antigravity) when entering this workspace.
+This specification is automatically ingested by AI coding agents (**Claude Code, OpenCode, Codex, Cursor, Antigravity**) upon entering this workspace.
 
 ---
 
-## ⚡ 1. Automatic Workspace Bootstrap Directive
+## ⚡ 1. Pre-Flight Verification & Automated Installation Protocol
 
-Before executing any penetration testing tasks, assessments, or running tools, you **MUST** verify whether the local workspace environment is initialized:
+Before accepting or executing any user tasks, reconnaissance, vulnerability assessments, or tool commands, the AI agent **MUST** verify whether the local workspace environment is fully initialized.
+
+### Mandatory Pre-Flight Health Check
+Run the fast verification command:
 
 ```bash
-# Check if .venv and .agents/skills exist:
-# If either .venv or .agents/skills/ is missing, run the automated installer:
-python install.py
-# or: ./install.sh
+python install.py --check
 ```
 
-> **Rule:** If `.venv` or `.agents/skills/` does not exist in the project directory, automatically run `python install.py` (or `./install.sh` on POSIX systems) to initialize the local environment and install the 58 offensive skills before performing further actions.
+### Automated Remediation Gate
+- **If exit code is `0` (`[STATUS: 100% READY]`):** The workspace is fully installed and verified. Proceed directly to campaign planning or user request execution.
+- **If exit code is `1` (`[STATUS: INCOMPLETE]`):** The local workspace has missing submodules, venv, or skills. The agent **MUST immediately run the automated bootstrap installer**:
+
+```bash
+# Universal (Windows, Linux, macOS):
+python install.py
+
+# or POSIX Shell (Linux, macOS, WSL):
+./install.sh
+```
+
+> **Strict Rule:** No penetration testing tasks, tool scans (`tools/prism`, `tools/spiderfoot`), or specialist subagent dispatches may be executed until `python install.py --check` passes successfully.
 
 ---
 
-## 🛡️ 2. Core Operational Principles
+## 🛡️ 2. Core Operational & Compliance Principles
 
-1. **Authorization Gate:** Always verify written target authorization and scope boundaries. Never execute intrusive actions without explicit consent.
+1. **Authorization Gate:** Always verify written target authorization and scope boundaries in `results/engagement.json`. Never execute intrusive actions without explicit consent.
 2. **Local Isolation:** All runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) are strictly local and gitignored. Never commit client data to git.
 3. **Evidence Hygiene:** Format all discovered findings into `results/findings/` using the standard JSON schema with CVSS v3.1/v4.0 scoring and UTC timestamps.
 
