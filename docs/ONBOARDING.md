@@ -55,13 +55,12 @@ python --version
 Jalankan installer untuk memasang 58 skill ke `.agents/skills/` **lokal project**:
 
 ```bash
-# Linux / macOS / WSL:
-./tools/src/install_skills.sh --dry-run   # preview dulu
-./tools/src/install_skills.sh             # install ke .agents/ project
+# Universal (Windows / Linux / macOS):
+python tools/src/install_skills.py --dry-run   # preview dulu
+python tools/src/install_skills.py             # install ke .agents/ project
 
-# Windows (PowerShell):
-.\tools\src\install_skills.ps1 -DryRun    # preview
-.\tools\src\install_skills.ps1            # install
+# Linux / macOS / Shell:
+./tools/src/install_skills.sh
 ```
 
 > **Catatan:** Default installer menyalin skill ke `.agents/skills/` **di dalam project ini** (lokal), bukan ke environment global. Orang yang clone project ini langsung mendapat skill siap pakai.
@@ -79,22 +78,22 @@ git submodule update --init --recursive
 
 ---
 
-## 6. Install Skills ke Agent (Detail)
+## 6. Install Skills ke Agent (Detail & Opsi Lanjutan)
 
 ### Default: Lokal project (`.agents/skills/`)
 
 ```bash
-./tools/src/install_skills.sh                    # semua 58 skill
-./tools/src/install_skills.sh --only offensive-sqli offensive-xss
-./tools/src/install_skills.sh --dry-run
+python tools/src/install_skills.py                    # semua 58 skill
+python tools/src/install_skills.py --only offensive-sqli offensive-xss
+python tools/src/install_skills.py --dry-run
 ```
 
 ### Opsional: Global agent (explicit opt-in)
 
 ```bash
-./tools/src/install_skills.sh --global           # ke ~/.claude/skills, ~/.config/opencode/skills, dll.
-./tools/src/install_skills.sh --agent opencode   # filter agent tertentu
-./tools/src/install_skills.sh --dir ~/.agents    # custom dir
+python tools/src/install_skills.py --global           # ke ~/.claude/skills, ~/.config/opencode/skills, dll.
+python tools/src/install_skills.py --agent opencode   # filter agent tertentu
+python tools/src/install_skills.py --dir ~/.agents    # custom dir
 ```
 
 ### Agent yang didukung

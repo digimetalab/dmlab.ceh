@@ -67,14 +67,14 @@ pip install -r requirements.txt
 
 Pasang 58 skills langsung ke direktori lokal project (`.agents/skills/`):
 
-- **Linux / macOS / WSL:**
+- **Universal (Windows, Linux, macOS):**
   ```bash
-  ./tools/src/install_skills.sh
+  python tools/src/install_skills.py
   ```
 
-- **Windows (PowerShell):**
-  ```powershell
-  .\tools\src\install_skills.ps1
+- **Linux / macOS / Shell:**
+  ```bash
+  ./tools/src/install_skills.sh
   ```
 
 ---

@@ -1,0 +1,17 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Explicitly normalize shell scripts and python scripts
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# GitHub Linguist Overrides:
+# Mark one-off helper scripts and submodule tools as vendored so that 
+# the repository's primary language correctly reflects Python
+tools/src/*.sh linguist-vendored=true
+tools/src/*.py linguist-vendored=false
+*.md linguist-documentation=true
