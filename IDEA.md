@@ -1,4 +1,4 @@
-﻿# IDEA - Agentic AI Pentest
+# IDEA - Agentic AI Pentest
 
 ## Masalah
 
@@ -22,7 +22,7 @@ Bukan membangun tool baru - tapi **mengorkestrasi yang sudah ada**: 58 skill met
 
 ## Visi
 
-1. **v1 (sekarang)** - skema + mapping skill->agent->workflow terdokumentasi di `AGENT-SCHEMA.md`; Commander menjalankan alurnya secara manual/terpandu di opencode.
+1. **v1 (sekarang)** - skema + mapping skill->agent->workflow terdokumentasi di `AGENTS.md`; Commander menjalankan alurnya secara manual/terpandu di opencode.
 2. **v2** - folder `results/` sebagai blackboard terstruktur (engagement.json, findings per fase) agar orchestrator punya state antar sesi.
 3. **v3** - otomatisasi: Commander membaca `results/findings/*.json`, memutuskan eskalasi secara programatik, dan memicu reporting-agent otomatis.
 4. **v4** - API wrapper: orchestrator memanggil Prism/SpiderFoot via Python (bukan shell) agar bisa masuk CI/CD.

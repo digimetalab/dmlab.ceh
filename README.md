@@ -1,8 +1,8 @@
-﻿# CEH Lab — Pentest & OSINT Workspace
+# CEH Lab � Pentest & OSINT Workspace
 
 Workspace untuk belajar **CEH (Certified Ethical Hacker)** dan membangun **agentic AI pentest** yang mengorkestrasi skill + tooling OSINT yang sudah ada.
 
-> **Penting:** Gunakan hanya untuk target yang sudah Anda miliki izin (lab, CTF, bug bounty resmi). Lihat `AGENT-SCHEMA.md` — bagian Authorization.
+> **Penting:** Gunakan hanya untuk target yang sudah Anda miliki izin (lab, CTF, bug bounty resmi). Lihat `AGENTS.md` � bagian Authorization.
 
 ---
 
@@ -10,19 +10,19 @@ Workspace untuk belajar **CEH (Certified Ethical Hacker)** dan membangun **agent
 
 ```
 ceh/
-├── .agents/
-│   └── skills/            # 58 skill offensive security (format SKILL.md)
-├── AGENT-SCHEMA.md        # Arsitektur multi-agent pentest
-├── WORKFLOW-WEB-PENTEST.md # Alur pentest website lengkap (fase 0-7)
-├── IDEA.md                # Visi & ide di balik proyek
-├── ceh/                   # Python virtualenv (Python 3.14, via WSL)
-├── tools/
-│   ├── Prism-platform/    # Platform OSINT self-hosted (FastAPI + Next.js)
-│   │   ├── cli.py         #   CLI scan: python cli.py scan <target> --json
-│   │   └── modules/       #   22+ modul OSINT (WHOIS, DNS, Shodan, dll)
-│   └── spiderfoot/        # SpiderFoot OSINT automation
-│       └── sf.py          #   CLI: python sf.py -s <target> -u all -o json
-├── report/                # Semua laporan pentest/OSINT (format: tipe_namatarget_yyyymmdd_hhmm.md)
++-- .agents/
+�   +-- skills/            # 58 skill offensive security (format SKILL.md)
++-- AGENTS.md        # Arsitektur multi-agent pentest
++-- WORKFLOW.md # Alur pentest website lengkap (fase 0-7)
++-- IDEA.md                # Visi & ide di balik proyek
++-- ceh/                   # Python virtualenv (Python 3.14, via WSL)
++-- tools/
+�   +-- Prism-platform/    # Platform OSINT self-hosted (FastAPI + Next.js)
+�   �   +-- cli.py         #   CLI scan: python cli.py scan <target> --json
+�   �   +-- modules/       #   22+ modul OSINT (WHOIS, DNS, Shodan, dll)
+�   +-- spiderfoot/        # SpiderFoot OSINT automation
+�       +-- sf.py          #   CLI: python sf.py -s <target> -u all -o json
++-- report/                # Semua laporan pentest/OSINT (format: tipe_namatarget_yyyymmdd_hhmm.md)
 ```
 
 ## Konvensi Penamaan Report
@@ -33,9 +33,9 @@ Semua report disimpan di folder `report/` dengan format:
 report/<tipe>_<namatarget>_<yyyymmdd>_<hhmm>.md
 ```
 
-- **tipe** — kategori target: `web`, `person`, `domain`, `ip`, `email`, `phone`, `username`, `wireless`, `infra`, dst.
-- **namatarget** — nama target (tanpa karakter aneh, tanpa ekstensi), mis. `bprlestaribali`, `cgyudistira`.
-- **yyyymmdd_hhmm** — timestamp lokal saat report dibuat.
+- **tipe** � kategori target: `web`, `person`, `domain`, `ip`, `email`, `phone`, `username`, `wireless`, `infra`, dst.
+- **namatarget** � nama target (tanpa karakter aneh, tanpa ekstensi), mis. `bprlestaribali`, `cgyudistira`.
+- **yyyymmdd_hhmm** � timestamp lokal saat report dibuat.
 
 Contoh:
 
@@ -82,18 +82,18 @@ cd /mnt/d/Projects/ceh/tools/spiderfoot
 
 ### 3. Multi-agent pentest
 
-Ikuti skema di [`AGENT-SCHEMA.md`](AGENT-SCHEMA.md):
+Ikuti skema di [`AGENTS.md`](AGENTS.md):
 
-1. **Commander agent** — terima target, validasi izin, susun rencana.
-2. **Recon agents** — jalankan Prism CLI + SpiderFoot untuk footprint.
-3. **Assessment agents** — load skill sesuai permukaan serangan (SQLi, XSS, SSRF, ...).
-4. **Reporting agent** — susun laporan (CVSS, bukti, remediasi) via skill `offensive-reporting`.
+1. **Commander agent** � terima target, validasi izin, susun rencana.
+2. **Recon agents** � jalankan Prism CLI + SpiderFoot untuk footprint.
+3. **Assessment agents** � load skill sesuai permukaan serangan (SQLi, XSS, SSRF, ...).
+4. **Reporting agent** � susun laporan (CVSS, bukti, remediasi) via skill `offensive-reporting`.
 
-Skill aktif otomatis dikenali opencode dari `.agents/skills/` — sebut topiknya di perintah (contoh: "tes SQL injection") dan skill terkait akan di-load.
+Skill aktif otomatis dikenali opencode dari `.agents/skills/` � sebut topiknya di perintah (contoh: "tes SQL injection") dan skill terkait akan di-load.
 
 ### 4. Pentest website lengkap
 
-Ikuti [`WORKFLOW-WEB-PENTEST.md`](WORKFLOW-WEB-PENTEST.md) — pipeline 8 fase dari izin → recon → triage → assessment per-attack-surface → auth → exploit → reporting, memaksimalkan pemakaian skill.
+Ikuti [`WORKFLOW.md`](WORKFLOW.md) � pipeline 8 fase dari izin ? recon ? triage ? assessment per-attack-surface ? auth ? exploit ? reporting, memaksimalkan pemakaian skill.
 
 ---
 
@@ -110,7 +110,7 @@ Ikuti [`WORKFLOW-WEB-PENTEST.md`](WORKFLOW-WEB-PENTEST.md) — pipeline 8 fase d
 
 ## Catatan Environment
 
-- Proyek memakai **WSL** (Ubuntu) — opencode berjalan di WSL, dan venv dibuat via WSL.
+- Proyek memakai **WSL** (Ubuntu) � opencode berjalan di WSL, dan venv dibuat via WSL.
 - Virtualenv ada di `ceh/` (path WSL: `/mnt/d/Projects/ceh/ceh`), Python 3.14.4, dibuat `--without-pip`.
 - Jalankan semua perintah Python melalui WSL, pakai interpreter venv langsung:
   ```bash
