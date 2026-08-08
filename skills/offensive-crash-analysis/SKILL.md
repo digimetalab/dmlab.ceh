@@ -1115,7 +1115,7 @@ nm ./target | grep -E " T " | head -5
 addr2line -e ./target -f -C 0x12b0
 # With debug info (-g at compile time):
 #   double_free
-#   /home/dev/crash_analysis_lab/src/vulnerable_suite.c:37
+#   ./lab/crash_analysis_lab/src/vulnerable_suite.c:37
 #
 # Without debug info, you only get the function name:
 #   double_free
@@ -1229,7 +1229,7 @@ nm ./vuln_asan | grep "T use_after_free"
 addr2line -e ./vuln_asan -f -C 0x14a3
 # Output:
 #   use_after_free
-#   /home/dev/crash_analysis_lab/src/vulnerable_suite.c:27
+#   ./lab/crash_analysis_lab/src/vulnerable_suite.c:27
 
 # addr2line options:
 # -f: Show function names
@@ -2931,7 +2931,7 @@ WRITE of size 21 at 0x502000000060 thread T0
     #2 0x6273088c46e8 in main src/vulnerable_delayed.c:75
     #3 0x7174a082a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #4 0x7174a082a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #5 0x6273088c41e4 in _start (/home/dev/crash_analysis_lab/delayed_vuln_asan+0x11e4) (BuildId: 5ba4175df72d24b28ce5932020c5be09d8b70064)
+    #5 0x6273088c41e4 in _start (./lab/crash_analysis_lab/delayed_vuln_asan+0x11e4) (BuildId: 5ba4175df72d24b28ce5932020c5be09d8b70064)
 
 0x502000000060 is located 0 bytes after 16-byte region [0x502000000050,0x502000000060)
 allocated by thread T0 here:
@@ -2940,7 +2940,7 @@ allocated by thread T0 here:
     #2 0x6273088c46e8 in main src/vulnerable_delayed.c:75
     #3 0x7174a082a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #4 0x7174a082a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #5 0x6273088c41e4 in _start (/home/dev/crash_analysis_lab/delayed_vuln_asan+0x11e4) (BuildId: 5ba4175df72d24b28ce5932020c5be09d8b70064)
+    #5 0x6273088c41e4 in _start (./lab/crash_analysis_lab/delayed_vuln_asan+0x11e4) (BuildId: 5ba4175df72d24b28ce5932020c5be09d8b70064)
 
 SUMMARY: AddressSanitizer: heap-buffer-overflow ../../../../src/libsanitizer/asan/asan_interceptors.cpp:563 in strcpy
 ```
@@ -3654,13 +3654,13 @@ WRITE of size 18 at 0x50200000001a thread T0
     #1 0x5ac25166523d in main src/heap.c:6
     #2 0x77322662a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x77322662a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x5ac251665144 in _start (/home/dev/crash_analysis_lab/heap+0x1144) (BuildId: 060cf895aa12e860df15a930f5880bac28c424b2)
+    #4 0x5ac251665144 in _start (./lab/crash_analysis_lab/heap+0x1144) (BuildId: 060cf895aa12e860df15a930f5880bac28c424b2)
 0x50200000001a is located 0 bytes after 10-byte region [0x502000000010,0x50200000001a)
 allocated by thread T0 here:
     #1 0x5ac25166521e in main src/heap.c:5
     #2 0x77322662a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x77322662a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x5ac251665144 in _start (/home/dev/crash_analysis_lab/heap+0x1144) (BuildId: 060cf895aa12e860df15a930f5880bac28c424b2)
+    #4 0x5ac251665144 in _start (./lab/crash_analysis_lab/heap+0x1144) (BuildId: 060cf895aa12e860df15a930f5880bac28c424b2)
 SUMMARY: AddressSanitizer: heap-buffer-overflow ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors_memintrinsics.inc:115 in memcpy
 Shadow bytes around the buggy address:
   0x501ffffffd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -3725,7 +3725,7 @@ WRITE of size 29 at 0x732093f00030 thread T0
     #2 0x5a7f7e0e5314 in main src/stack.c:9
     #3 0x73209602a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #4 0x73209602a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #5 0x5a7f7e0e5144 in _start (/home/dev/crash_analysis_lab/stack+0x1144) (BuildId: 03503cc1bce726df73220dfdcbbb15bc88eceb61)
+    #5 0x5a7f7e0e5144 in _start (./lab/crash_analysis_lab/stack+0x1144) (BuildId: 03503cc1bce726df73220dfdcbbb15bc88eceb61)
 
 Address 0x732093f00030 is located in stack of thread T0 at offset 48 in frame
     #0 0x5a7f7e0e5218 in vulnerable_function src/stack.c:3
@@ -3785,7 +3785,7 @@ WRITE of size 4 at 0x502000000010 thread T0
     #0 0x59df62e93266 in main src/uaf.c:8
     #1 0x7c6892c2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #2 0x7c6892c2a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #3 0x59df62e93104 in _start (/home/dev/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
+    #3 0x59df62e93104 in _start (./lab/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
 
 0x502000000010 is located 0 bytes inside of 4-byte region [0x502000000010,0x502000000014)
 freed by thread T0 here:
@@ -3793,14 +3793,14 @@ freed by thread T0 here:
     #1 0x59df62e9322f in main src/uaf.c:7
     #2 0x7c6892c2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x7c6892c2a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x59df62e93104 in _start (/home/dev/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
+    #4 0x59df62e93104 in _start (./lab/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
 
 previously allocated by thread T0 here:
     #0 0x7c68930fd9c7 in malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:69
     #1 0x59df62e931de in main src/uaf.c:5
     #2 0x7c6892c2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x7c6892c2a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x59df62e93104 in _start (/home/dev/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
+    #4 0x59df62e93104 in _start (./lab/crash_analysis_lab/uaf+0x1104) (BuildId: c4ef3acea8680ee4593d16ce8307652cb859190c)
 
 SUMMARY: AddressSanitizer: heap-use-after-free src/uaf.c:8 in main
 Shadow bytes around the buggy address:
@@ -3852,7 +3852,7 @@ gcc -g -O0 -fsanitize=address -fno-omit-frame-pointer -D_FORTIFY_SOURCE=0 src/df
     #1 0x651975eaa1da in main src/df.c:7
     #2 0x71e78a22a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x71e78a22a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x651975eaa0e4 in _start (/home/dev/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
+    #4 0x651975eaa0e4 in _start (./lab/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
 
 0x502000000010 is located 0 bytes inside of 10-byte region [0x502000000010,0x50200000001a)
 freed by thread T0 here:
@@ -3860,14 +3860,14 @@ freed by thread T0 here:
     #1 0x651975eaa1ce in main src/df.c:6
     #2 0x71e78a22a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x71e78a22a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x651975eaa0e4 in _start (/home/dev/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
+    #4 0x651975eaa0e4 in _start (./lab/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
 
 previously allocated by thread T0 here:
     #0 0x71e78a6fd9c7 in malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:69
     #1 0x651975eaa1be in main src/df.c:5
     #2 0x71e78a22a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x71e78a22a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x651975eaa0e4 in _start (/home/dev/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
+    #4 0x651975eaa0e4 in _start (./lab/crash_analysis_lab/df+0x10e4) (BuildId: 9e41cb0cfeda12d633976b0ec4789b8bbcf76d11)
 
 SUMMARY: AddressSanitizer: double-free ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:52 in free
 ==1388==ABORTING
@@ -3915,7 +3915,7 @@ Direct leak of 100 byte(s) in 1 object(s) allocated from:
     #1 0x5b8260bb219e in main src/ml.c:5
     #2 0x7536e1a2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
     #3 0x7536e1a2a28a in __libc_start_main_impl ../csu/libc-start.c:360
-    #4 0x5b8260bb20c4 in _start (/home/dev/crash_analysis_lab/ml+0x10c4) (BuildId: a852beeb6801e117a58cb487aa280c8fb55a3964)
+    #4 0x5b8260bb20c4 in _start (./lab/crash_analysis_lab/ml+0x10c4) (BuildId: a852beeb6801e117a58cb487aa280c8fb55a3964)
 
 SUMMARY: AddressSanitizer: 100 byte(s) leaked in 1 allocation(s).
 Aborted
@@ -4182,12 +4182,12 @@ clang++-19 -fsanitize=memory -stdlib=libc++ -o msan src/msan.c
 
 ```text
 ==2329==WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x555555621d01 in main (/home/dev/crash_analysis_lab/msan+0xcdd01) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8)
+    #0 0x555555621d01 in main (./lab/crash_analysis_lab/msan+0xcdd01) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8)
     #1 0x7ffff7a2a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
     #2 0x7ffff7a2a28a in __libc_start_main csu/../csu/libc-start.c:360:3
-    #3 0x5555555862f4 in _start (/home/dev/crash_analysis_lab/msan+0x322f4) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8)
+    #3 0x5555555862f4 in _start (./lab/crash_analysis_lab/msan+0x322f4) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8)
 
-SUMMARY: MemorySanitizer: use-of-uninitialized-value (/home/dev/crash_analysis_lab/msan+0xcdd01) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8) in main
+SUMMARY: MemorySanitizer: use-of-uninitialized-value (./lab/crash_analysis_lab/msan+0xcdd01) (BuildId: a1bfcfbc905803f4547f0977c2e647e8f076e8a8) in main
 Exiting
 ```
 
@@ -4525,12 +4525,12 @@ src/ubsan.c:11:15: runtime error: division by zero
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior src/ubsan.c:11:15
 UndefinedBehaviorSanitizer:DEADLYSIGNAL
 ==1189==ERROR: UndefinedBehaviorSanitizer: FPE on unknown address 0x5555b6f99873 (pc 0x5555b6f99873 bp 0x7ffe6cee6130 sp 0x7ffe6cee6110 T1189)
-    #0 0x5555b6f99873 in main /home/dev/crash_analysis_lab/src/ubsan.c:11:15
+    #0 0x5555b6f99873 in main ./lab/crash_analysis_lab/src/ubsan.c:11:15
     #1 0x73ccf2e2a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
     #2 0x73ccf2e2a28a in __libc_start_main csu/../csu/libc-start.c:360:3
-    #3 0x5555b6f6f3e4 in _start (/home/dev/crash_analysis_lab/ubsan+0x53e4)
+    #3 0x5555b6f6f3e4 in _start (./lab/crash_analysis_lab/ubsan+0x53e4)
 UndefinedBehaviorSanitizer can not provide additional info.
-SUMMARY: UndefinedBehaviorSanitizer: FPE /home/dev/crash_analysis_lab/src/ubsan.c:11:15 in main
+SUMMARY: UndefinedBehaviorSanitizer: FPE ./lab/crash_analysis_lab/src/ubsan.c:11:15 in main
 ==1189==ABORTING
 ```
 
@@ -5027,7 +5027,7 @@ source .venv/bin/activate
 # pip install pwntools
 
 checksec --file=./vuln_no_protect
-#[*] '/home/dev/crash_analysis_lab/vuln_no_protect'
+#[*] './lab/crash_analysis_lab/vuln_no_protect'
 #    Arch:       amd64-64-little
 #    RELRO:      Partial RELRO
 #    Stack:      No canary found
@@ -5041,7 +5041,7 @@ checksec --file=./vuln_no_protect
 #    Debuginfo:  Yes
 
 checksec --file=./vuln_asan
-# [*] '/home/dev/crash_analysis_lab/vuln_asan'
+# [*] './lab/crash_analysis_lab/vuln_asan'
 #    Arch:       amd64-64-little
 #    RELRO:      Full RELRO
 #    Stack:      Canary found
@@ -5103,7 +5103,7 @@ pwndbg> run 1 $(python3 -c "print('A'*200)")
 #LEGEND: STACK | HEAP | CODE | DATA | WX | RODATA
 #──────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ REGISTERS / show-flags off / show-compact-regs off ]───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 # RAX  0xd5
-# RBX  0x7fffffffe128 —▸ 0x7fffffffe3db ◂— '/home/dev/crash_analysis_lab/vuln_no_protect'
+# RBX  0x7fffffffe128 —▸ 0x7fffffffe3db ◂— './lab/crash_analysis_lab/vuln_no_protect'
 # RCX  0
 # RDX  0
 # RDI  0x7fffffffdda0 —▸ 0x7fffffffddd0 ◂— 0x4141414141414141 ('AAAAAAAA')
@@ -5123,7 +5123,7 @@ pwndbg> run 1 $(python3 -c "print('A'*200)")
 # ► 0x401225 <stack_overflow+79>    ret                                <0x4141414141414141>
 #    ↓
 #─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[ SOURCE (CODE) ]─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#In file: /home/dev/crash_analysis_lab/src/vulnerable_suite.c:11
+#In file: ./lab/crash_analysis_lab/src/vulnerable_suite.c:11
 #    6 void stack_overflow(char *input) {
 #    7     char buffer[64];
 #    8     printf("[*] Copying input to 64-byte buffer...\n");
@@ -5194,7 +5194,7 @@ pwndbg> run 1 $(python3 -c "print('A'*200)")
 # ... crash occurs ...
 
 pwndbg> checksec
-# File:     /home/dev/crash_analysis_lab/vuln_no_protect
+# File:     ./lab/crash_analysis_lab/vuln_no_protect
 # Arch:     amd64
 # RELRO:      Partial RELRO
 # Stack:      No canary found
@@ -5409,10 +5409,10 @@ casr-cli -u casrep/
 casr-cli --sarif output.sarif casrep/
 
 # SARIF with source root for proper file paths
-casr-cli --sarif output.sarif --source-root /home/dev/crash_analysis_lab casrep/
+casr-cli --sarif output.sarif --source-root ./lab/crash_analysis_lab casrep/
 
 # Strip path prefix from crash paths in statistics
-casr-cli --strip-path /home/dev/crash_analysis_lab/ casrep/
+casr-cli --strip-path ./lab/crash_analysis_lab/ casrep/
 ```
 
 **AFL++ Fuzzing to CASR Triage**
@@ -6069,14 +6069,14 @@ Here's an actual CASR report from analyzing a stack buffer overflow:
     "Explanation": "The target writes data past the end, or before the beginning, of the intended stack buffer."
   },
   "Stacktrace": [
-    "    #0 0x555555602d73 in strcpy (/home/dev/crash_analysis_lab/vuln_asan+0xaed73)",
-    "    #1 0x555555659c75 in stack_overflow /home/dev/crash_analysis_lab/src/vulnerable_suite.c:9:5",
-    "    #2 0x555555659c75 in main /home/dev/crash_analysis_lab/src/vulnerable_suite.c:65:39",
+    "    #0 0x555555602d73 in strcpy (./lab/crash_analysis_lab/vuln_asan+0xaed73)",
+    "    #1 0x555555659c75 in stack_overflow ./lab/crash_analysis_lab/src/vulnerable_suite.c:9:5",
+    "    #2 0x555555659c75 in main ./lab/crash_analysis_lab/src/vulnerable_suite.c:65:39",
     "    #3 0x7ffff7c2a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16",
     "    #4 0x7ffff7c2a28a in __libc_start_main csu/../csu/libc-start.c:360:3",
-    "    #5 0x555555580344 in _start (/home/dev/crash_analysis_lab/vuln_asan+0x2c344)"
+    "    #5 0x555555580344 in _start (./lab/crash_analysis_lab/vuln_asan+0x2c344)"
   ],
-  "CrashLine": "/home/dev/crash_analysis_lab/src/vulnerable_suite.c:9:5",
+  "CrashLine": "./lab/crash_analysis_lab/src/vulnerable_suite.c:9:5",
   "Source": [
     "    5      // 1. Stack Buffer Overflow",
     "    6      void stack_overflow(char *input) {",
@@ -7242,7 +7242,7 @@ frida -f ./vuln_no_protect -l trace_vuln_suite.js -- 1 $(python3 -c "print('A'*2
 # [+] Hooked libc malloc at 0x7a0dddead650
 # [*] stack_overflow called
 #     Backtrace:
-#     0x40151e vuln_no_protect!main /home/dev/crash_analysis_lab/src/vulnerable_suite.c:65:64
+#     0x40151e vuln_no_protect!main ./lab/crash_analysis_lab/src/vulnerable_suite.c:65:64
 #     0x7a0ddde2a1ca libc.so.6!0x2a1ca
 #     0x7a0ddde2a28b libc.so.6!__libc_start_main+0x8b
 #     0x401115 vuln_no_protect!_start+0x25
@@ -7257,7 +7257,7 @@ frida -f ./vuln_no_protect -l trace_vuln_suite.js -- 3
 # Expected output shows the UAF pattern:
 # [*] use_after_free called
 #     Backtrace:
-#     0x40154c vuln_no_protect!main /home/dev/crash_analysis_lab/src/vulnerable_suite.c:67:35
+#     0x40154c vuln_no_protect!main ./lab/crash_analysis_lab/src/vulnerable_suite.c:67:35
 # [LIBC] malloc(0x40)
 # [LIBC] free(0x355933c0)           <- Memory freed here
 # [LIBC] memcpy(...)                <- Accesses after free
@@ -7519,8 +7519,8 @@ python3 frida_reachability.py 1 $(python3 -c "print('A'*200)")
 #     dest: 0x7fffefb50950
 #     src:  0x7fffefb52398
 #     [!] TAINTED DATA REACHING SINK!
-#     0x401208 vuln_no_protect!stack_overflow /home/dev/crash_analysis_lab/src/vulnerable_suite.c:10:5
-#     0x40151e vuln_no_protect!main /home/dev/crash_analysis_lab/src/vulnerable_suite.c:65:64
+#     0x401208 vuln_no_protect!stack_overflow ./lab/crash_analysis_lab/src/vulnerable_suite.c:10:5
+#     0x40151e vuln_no_protect!main ./lab/crash_analysis_lab/src/vulnerable_suite.c:65:64
 #     0x70b804a2a1ca libc.so.6!0x2a1ca
 #     0x70b804a2a28b libc.so.6!__libc_start_main+0x8b
 #     0x401115 vuln_no_protect!_start+0x25
@@ -8859,7 +8859,7 @@ Program received signal SIGSEGV, Segmentation fault.
 #3  0x4141414141414141 in ?? ()
 Backtrace stopped: Cannot access memory at address 0x4141414141414149
 
-File:     /home/dev/crash_analysis_lab/vuln_no_protect
+File:     ./lab/crash_analysis_lab/vuln_no_protect
 Arch:     amd64
 RELRO:      Partial RELRO
 Stack:      No canary found
@@ -9115,8 +9115,8 @@ Crash A: stack-buffer-overflow(write)
 Crash B: heap-buffer-overflow(write)
 
 [2] Crash Location:
-Crash A: /home/dev/crash_analysis_lab/src/vulnerable_suite.c:9:5
-Crash B: /home/dev/crash_analysis_lab/src/vulnerable_suite.c:17:5
+Crash A: ./lab/crash_analysis_lab/src/vulnerable_suite.c:9:5
+Crash B: ./lab/crash_analysis_lab/src/vulnerable_suite.c:17:5
 
 [3] Stack Trace Comparison:
 Crash A top frames:
@@ -9398,7 +9398,7 @@ python3 multi_vuln_variant_finder.py ./vuln_no_protect variants/
 
 # Expected output:
 # [*] Testing vulnerability type 1...
-# [+] New variant (1): test=1, #0 in strcpy (/home/dev/crash_analysis_lab/vuln_as...
+# [+] New variant (1): test=1, #0 in strcpy (./lab/crash_analysis_lab/vuln_as...
 #
 # [*] Testing vulnerability type 2...
 # (no crash - heap overflow is silent without ASAN)
@@ -9407,10 +9407,10 @@ python3 multi_vuln_variant_finder.py ./vuln_no_protect variants/
 # (no crash - UAF is silent without ASAN)
 #
 # [*] Testing vulnerability type 4...
-# [+] New variant (2): test=4, #0 in free (/home/dev/crash_analysis_lab/vuln_asan...
+# [+] New variant (2): test=4, #0 in free (./lab/crash_analysis_lab/vuln_asan...
 #
 # [*] Testing vulnerability type 5...
-# [+] New variant (3): test=5, #0 in null_deref /home/dev/crash_analysis_lab/src/...
+# [+] New variant (3): test=5, #0 in null_deref ./lab/crash_analysis_lab/src/...
 #
 # [*] Found 3 unique crash variants across all tests
 
@@ -11272,32 +11272,32 @@ done
 
 #Testing heap_crash_poc.py...
 #[*] Testing PoC...
-#[+] Starting local process '/home/dev/crash_analysis_lab/vuln_asan': pid 17008
-#[*] Process '/home/dev/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17008)
+#[+] Starting local process './lab/crash_analysis_lab/vuln_asan': pid 17008
+#[*] Process './lab/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17008)
 #[+] Crash confirmed! (ASAN exit code 1)
 
 #Testing heap_overflow_poc.py...
 #[*] Testing PoC...
-#[+] Starting local process '/home/dev/crash_analysis_lab/vuln_asan': pid 17015
-#[*] Process '/home/dev/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17015)
+#[+] Starting local process './lab/crash_analysis_lab/vuln_asan': pid 17015
+#[*] Process './lab/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17015)
 #[+] Crash confirmed! (ASAN exit code 1)
 
 #Testing stack_crash_poc.py...
 #[*] Testing PoC...
-#[+] Starting local process '/home/dev/crash_analysis_lab/vuln_no_protect': pid 17022
-#[*] Process '/home/dev/crash_analysis_lab/vuln_no_protect' stopped with exit code -11 (SIGSEGV) (pid #17022)
+#[+] Starting local process './lab/crash_analysis_lab/vuln_no_protect': pid 17022
+#[*] Process './lab/crash_analysis_lab/vuln_no_protect' stopped with exit code -11 (SIGSEGV) (pid #17022)
 #[+] Crash confirmed! (SIGSEGV)
 
 #Testing stack_overflow_poc.py...
 #[*] Testing PoC...
-#[+] Starting local process '/home/dev/crash_analysis_lab/vuln_no_protect': pid 17027
-#[*] Process '/home/dev/crash_analysis_lab/vuln_no_protect' stopped with exit code -11 (SIGSEGV) (pid #17027)
+#[+] Starting local process './lab/crash_analysis_lab/vuln_no_protect': pid 17027
+#[*] Process './lab/crash_analysis_lab/vuln_no_protect' stopped with exit code -11 (SIGSEGV) (pid #17027)
 #[+] Crash confirmed! (SIGSEGV)
 
 #Testing uaf_poc.py...
 #[*] Testing UAF (test case 3) with ASAN build...
-#[+] Starting local process '/home/dev/crash_analysis_lab/vuln_asan': pid 17032
-#[*] Process '/home/dev/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17032)
+#[+] Starting local process './lab/crash_analysis_lab/vuln_asan': pid 17032
+#[*] Process './lab/crash_analysis_lab/vuln_asan' stopped with exit code 1 (pid 17032)
 #[+] UAF detected! (exit code 1)
 
 ```

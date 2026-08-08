@@ -453,7 +453,7 @@ test:
   with:
     xml-file: |
       <?xml version="1.0"?>
-      <!DOCTYPE root [<!ENTITY xxe SYSTEM "file:///home/runner/.ssh/id_rsa">]>
+      <!DOCTYPE root [<!ENTITY xxe SYSTEM "file:///etc/passwd">]>
       <testsuites>&xxe;</testsuites>
 ```
 

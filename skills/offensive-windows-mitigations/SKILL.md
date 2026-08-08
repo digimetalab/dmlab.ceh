@@ -4586,8 +4586,8 @@ if __name__ == "__main__":
 ```bash
 c:\Windows_Mitigations_Lab> python exploits\sc_www.py
 #[*] Phase 1: discovering addresses from binary output...
-#[x] Starting local process 'C:\\Windows_Mitigations_Lab\\bin\\www_vuln.exe'
-#[+] Starting local process 'C:\\Windows_Mitigations_Lab\\bin\\www_vuln.exe': pid 10640
+#[x] Starting local process '.\\lab\\bin\\www_vuln.exe'
+#[+] Starting local process '.\\lab\\bin\\www_vuln.exe': pid 10640
 #[*] Startup output:
 #    === Write-What-Where Demo ===
 #    safe_cleanup      @ 00000001400020F4
@@ -4612,7 +4612,7 @@ c:\Windows_Mitigations_Lab> python exploits\sc_www.py
 #[x] Receiving all data
 #[x] Receiving all data: 2B
 #[x] Receiving all data: 282B
-#[*] Process 'C:\\Windows_Mitigations_Lab\\bin\\www_vuln.exe' stopped with exit code 0 (pid 10640)
+#[*] Process '.\\lab\\bin\\www_vuln.exe' stopped with exit code 0 (pid 10640)
 #[+] Receiving all data: Done (282B)
 #[*] Output:
 
