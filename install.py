@@ -4,15 +4,16 @@ DMLab CEH — Automated Project Installer & Environment Validator (install.py)
 Universal cross-platform bootstrap for developers and AI agents (Windows, Linux, macOS).
 
 Capabilities:
-  1. Submodule Verification & Initialization (tools/prism, tools/spiderfoot)
-  2. Local Python Virtual Environment (.venv/)
-  3. Unified Dependency Installation (requirements.txt)
+  1. Submodule Verification & Upstream Sync (tools/prism, tools/spiderfoot)
+  2. Local Python Virtual Environment Setup (.venv/)
+  3. Dynamic & Unified Dependency Installation (root & submodule requirements.txt)
   4. 58 Standardized Skills Deployment (.agents/skills/)
   5. Pre-flight Environment Health Check (--check)
 
 Usage:
   python install.py           # Standard automated local install
   python install.py --check   # Fast pre-flight verification (returns 0 if complete, 1 if missing)
+  python install.py --latest  # Update git submodules to their latest upstream commits
   python install.py --force   # Force re-installation of dependencies and skills
   python install.py --dry-run # Preview actions without executing
 """
@@ -80,6 +81,7 @@ def check_environment(project_root: Path) -> tuple[bool, list[str]]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="DMLab CEH — Automated Workspace Installer & Validator")
     parser.add_argument("--check", action="store_true", help="Perform pre-flight verification without making changes")
+    parser.add_argument("--latest", action="store_true", help="Fetch and update git submodules to latest upstream commits")
     parser.add_argument("--force", action="store_true", help="Force re-installation of dependencies and skills")
     parser.add_argument("--dry-run", action="store_true", help="Preview installation actions without executing")
     args = parser.parse_args()
@@ -105,20 +107,25 @@ def main() -> int:
     print("=================================================================")
     print(f"Workspace Root: {project_root}")
 
-    # 1. Initialize Git Submodules
+    # 1. Initialize & Sync Git Submodules (Prism, SpiderFoot)
     print("\n[1/5] Checking Git Submodules (tools/prism, tools/spiderfoot)...")
     prism_marker = project_root / "tools" / "prism" / "cli.py"
     spiderfoot_marker = project_root / "tools" / "spiderfoot" / "sf.py"
 
-    if not prism_marker.exists() or not spiderfoot_marker.exists() or args.force:
+    submodule_cmd = ["git", "submodule", "update", "--init", "--recursive"]
+    if args.latest:
+        submodule_cmd = ["git", "submodule", "update", "--init", "--remote", "--recursive"]
+        print("  -> Fetching latest upstream commits for submodules...")
+
+    if not prism_marker.exists() or not spiderfoot_marker.exists() or args.force or args.latest:
         if args.dry_run:
-            print("  [dry-run] Would initialize git submodules.")
+            print(f"  [dry-run] Would execute: {' '.join(submodule_cmd)}")
         else:
-            print("  -> Initializing git submodules...")
-            run_cmd(["git", "submodule", "update", "--init", "--recursive"], cwd=project_root, check=False)
-            print("  [OK] Git submodules initialized.")
+            print("  -> Syncing submodule repositories...")
+            run_cmd(submodule_cmd, cwd=project_root, check=False)
+            print("  [OK] Submodules synced and up to date.")
     else:
-        print("  [OK] Git submodules already present.")
+        print("  [OK] Submodules already present and verified.")
 
     # 2. Check / Create Local Virtual Environment (.venv/)
     print("\n[2/5] Checking Local Virtual Environment (.venv/)...")
@@ -145,19 +152,27 @@ def main() -> int:
 
     active_python = str(venv_python) if venv_python.exists() else sys.executable
 
-    # 3. Install Unified Requirements
-    print("\n[3/5] Checking Python Dependencies (requirements.txt)...")
-    req_file = project_root / "requirements.txt"
-    if req_file.exists():
-        if args.dry_run:
-            print(f"  [dry-run] Would install {req_file} using {active_python}.")
-        else:
-            print(f"  -> Installing dependencies using {active_python}...")
-            run_cmd([active_python, "-m", "pip", "install", "--upgrade", "pip", "--quiet"], cwd=project_root, check=False)
-            run_cmd([active_python, "-m", "pip", "install", "-r", str(req_file), "--quiet"], cwd=project_root)
-            print("  [OK] Dependencies installed successfully.")
-    else:
-        print("  [WARN] requirements.txt not found. Skipping dependency installation.")
+    # 3. Dynamic Dependency Installation (Root + Submodules)
+    print("\n[3/5] Installing/Updating Python Dependencies across all tools...")
+    requirements_targets = [
+        project_root / "requirements.txt",
+        project_root / "tools" / "spiderfoot" / "requirements.txt",
+        project_root / "tools" / "prism" / "requirements.txt",
+        project_root / "tools" / "prism" / "requirements-web.txt",
+    ]
+
+    if not args.dry_run:
+        run_cmd([active_python, "-m", "pip", "install", "--upgrade", "pip", "--quiet"], cwd=project_root, check=False)
+
+    for req_file in requirements_targets:
+        if req_file.exists():
+            rel_path = req_file.relative_to(project_root)
+            if args.dry_run:
+                print(f"  [dry-run] Would install {rel_path}")
+            else:
+                print(f"  -> Installing requirements from {rel_path}...")
+                run_cmd([active_python, "-m", "pip", "install", "-r", str(req_file), "--quiet"], cwd=project_root, check=False)
+                print(f"  [OK] {rel_path} installed.")
 
     # 4. Install 58 Skills to .agents/skills/
     print("\n[4/5] Installing 58 Standard Skills to Local .agents/skills/...")
@@ -188,6 +203,7 @@ def main() -> int:
     else:
         print("  - Linux/macOS: source .venv/bin/activate")
     print("  - Universal:   python install.py (or ./install.sh)")
+    print("  - Latest Sync: python install.py --latest")
     print("  - Health Check:python install.py --check")
     print("  - Docs Hub:    docs/ONBOARDING.md | docs/AGENTS.md")
     print("=================================================================")
