@@ -32,7 +32,6 @@ standard_frameworks: "OWASP ASVS v4.0.3, OWASP Top 10 (2021), PTES, NIST SP 800-
 | **Periode Pengujian** | `<yyyy-mm-dd>` s.d. `<yyyy-mm-dd>` |
 | **Engagement ID** | `<engagement-id>` (tercatat di `results/engagement.json`) |
 | **Operator / Tim Penguji** | `<Nama Lead Tester / Dispatched Specialist Agents>` |
-| **Otorisasi Resmi** | `<Nama Pemberi Izin & Tanggal Penandatanganan RoE>` |
 | **Metodologi Acuan** | OWASP ASVS v4.0.3, PTES, NIST SP 800-115, MITRE ATT&CK |
 
 ---
@@ -93,7 +92,7 @@ Pengujian dieksekusi secara terstruktur melalui 8 fase terintegrasi:
 [Phase 7: Reporting]   <── [Phase 6: Post-Exploit]  <── [Phase 5: Safe PoC]    <── [Phase 4: Auth & API Audit]
 ```
 
-1. **Phase 0 — Scope, Authorization & Blackboard Setup**: Validasi legalitas otorisasi tertulis di `results/engagement.json` dan inisialisasi direktori `results/{recon,findings,evidence}`.
+1. **Phase 0 — Scope & Blackboard Setup**: Inisialisasi `results/engagement.json` dan direktori `results/{recon,findings,evidence}`.
 2. **Phase 1 — Passive Reconnaissance & OSINT**: Pemetaan jejak digital target menggunakan Prism CLI, SpiderFoot, Certificate Transparency (crt.sh), dan Wayback Machine CDX API tanpa interaksi aktif yang mengganggu (`offensive-osint`, `offensive-osint-methodology`).
 3. **Phase 2 — Fast Triage & Quick-Win Discovery**: Audit konfigurasi awal, file sensitif, robots.txt, sitemap, dan verifikasi header keamanan dasar (`offensive-fast-checking`).
 4. **Phase 3 — Attack Surface Mapping & Specialist Dispatching**: Analisis mendalam per vektor serangan spesifik (SQLi, XSS, SSRF, SSTI, XXE, Deserialization, File Upload, Business Logic, Race Condition) menggunakan modul spesialis dari taksonomi 58 Skills.

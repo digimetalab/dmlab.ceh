@@ -27,15 +27,12 @@ python install.py
 ./install.sh
 ```
 
-> **Strict Rule:** No penetration testing tasks, tool scans (`tools/prism`, `tools/spiderfoot`), or specialist subagent dispatches may be executed until `python install.py --check` passes successfully.
-
 ---
 
 ## 🛡️ 2. Core Operational & Compliance Principles
 
-1. **Authorization Gate:** Always verify written target authorization and scope boundaries in `results/engagement.json`. Never execute intrusive actions without explicit consent.
-2. **Local Isolation:** All runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) are strictly local and gitignored. Never commit client data to git.
-3. **Evidence Hygiene:** Format all discovered findings into `results/findings/` using the standard JSON schema with CVSS v3.1/v4.0 scoring and UTC timestamps.
+1. **Local Isolation:** All runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) are strictly local and gitignored. Never commit client data to git.
+2. **Evidence Hygiene:** Format all discovered findings into `results/findings/` using the standard JSON schema with CVSS v3.1/v4.0 scoring and UTC timestamps.
 
 ---
 

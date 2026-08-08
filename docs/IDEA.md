@@ -45,6 +45,5 @@ In traditional manual assessments, analysts must constantly context-switch acros
 
 ## 5. Ethical Standards & Legal Disclaimer
 
-- Testing is strictly restricted to targets with verified, written authorization. **No authorization → strictly no execution.**
 - Target data and scan outputs (`report/`, `results/`) are strictly kept local and gitignored.
 - This documentation and all associated skills are published exclusively for **lawful security research, defensive engineering, and authorized penetration testing**.

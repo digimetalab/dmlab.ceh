@@ -4,9 +4,6 @@ This document outlines the standard **8-Phase Penetration Testing Lifecycle** im
 
 All Python commands and tools must execute inside the project's local virtual environment (`.venv`).
 
-> [!IMPORTANT]
-> **Prerequisite:** Written authorization and verified rules of engagement (RoE) must be established before executing active phases. Without authorization recorded in `results/engagement.json` → **HALT IMMEDIATELY**.
-
 ---
 
 ## 🧭 Multi-Domain Intent Routing Engine (13 Skill Packages)
@@ -38,11 +35,10 @@ graph TD
 
 ## 8-Phase Lifecycle & Skill Domain Integration
 
-### Phase 0 — Scope, Authorization & Blackboard Setup
+### Phase 0 — Scope & Blackboard Setup
 | Action | Skill / Tool | Description & Output |
 |---|---|---|
 | Define target scope, boundaries, and exclusions | Manual / Commander | Record target scope in `results/engagement.json` |
-| Confirm written legal authorization | Compliance Gate | Mandatory validation before proceeding |
 | Initialize blackboard structure | Filesystem | Create directories: `results/{recon,findings,evidence}` |
 
 ---

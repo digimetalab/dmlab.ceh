@@ -12,7 +12,6 @@ This document defines the **Multi-Agent Orchestration Architecture** of DMLab CE
 | **Decoupled Orchestrator** | A centralized **Commander Agent** governs the assessment Directed Acyclic Graph (DAG), while specialist subagents execute scoped domain tasks. |
 | **Direct Tooling Integration** | Practical execution leverages real CLI tools (`python tools/prism/cli.py`, `sf.py`) rather than mock simulations. |
 | **Shared Evidence Blackboard** | Inter-agent communication and intermediate findings are persisted in `results/` as structured JSON artifacts. |
-| **Strict Authorization Gate** | No active scanning or exploitation phase may proceed without validated, documented authorization. |
 | **Evidence & Reporting Hygiene** | All findings are timestamped, attributed to specific tools/payloads, and formatted per CVSS v3.1/v4.0 standards. |
 
 ---
@@ -22,8 +21,8 @@ This document defines the **Multi-Agent Orchestration Architecture** of DMLab CE
 ```
 +-------------------------------------------------------------------------+
 |                       COMMANDER (Orchestrator Agent)                    |
-|   Intent Parsing -> Authorization Verification -> DAG Plan Construction |
-|        -> Specialist Dispatch -> Evidence Correlation -> Status Sync    |
+|   Intent Parsing -> DAG Plan Construction -> Specialist Dispatch ->     |
+|        Evidence Correlation -> Status Sync                              |
 +------------------------------------+------------------------------------+
                                      |
                 +--------------------+--------------------+
@@ -59,14 +58,13 @@ This document defines the **Multi-Agent Orchestration Architecture** of DMLab CE
 The **Commander Agent** is the single entry point for every engagement and is responsible for managing the end-to-end testing lifecycle:
 
 1. **Intent Parsing**: Extracts target identifier, target category (Domain, IP, CIDR, Web Application, Identity), scope boundaries, and operational constraints from the analyst's prompt.
-2. **Authorization Verification**: Validates explicit consent and rules of engagement (RoE). Halts execution if scope is ambiguous.
-3. **DAG Plan Construction**: Generates a phased execution graph:
+2. **DAG Plan Construction**: Generates a phased execution graph:
    ```
    Reconnaissance -> Fast Triage -> Surface Assessment -> Deep Verification -> Reporting
    ```
-4. **Specialist Dispatch**: Activates targeted specialist subagents, supplying relevant blackboard context.
-5. **Dynamic Escalation**: Inspects intermediate findings (e.g., an exposed GraphQL endpoint triggers the `graphql-agent`; discovered domain credentials trigger the `ad-agent`).
-6. **Blackboard Synchronization**: Maintains operational state in `results/engagement.json`.
+3. **Specialist Dispatch**: Activates targeted specialist subagents, supplying relevant blackboard context.
+4. **Dynamic Escalation**: Inspects intermediate findings (e.g., an exposed GraphQL endpoint triggers the `graphql-agent`; discovered domain credentials trigger the `ad-agent`).
+5. **Blackboard Synchronization**: Maintains operational state in `results/engagement.json`.
 
 ---
 

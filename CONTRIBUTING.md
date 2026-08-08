@@ -42,7 +42,6 @@ We welcome contributions from security analysts, red/purple/blue teamers, and AI
 
 ## 3. Non-Negotiable Standards
 
-- **Strict Authorization:** No content may encourage or facilitate unauthorized or unlawful testing.
 - **Zero Target Data:** Never commit target metadata, client credentials, or raw findings from `results/` or `report/`.
 - **Zero Hardcoded Secrets:** Never commit `.env` files, API keys, or private tokens.
 - **Immaculate Git Hygiene:** Ensure that gitignored directories remain untracked.

@@ -18,8 +18,8 @@
 By orchestrating **58 standardized offensive security skills** (structured in YAML frontmatter `SKILL.md` format) alongside battle-tested OSINT engines ([**Prism**](tools/prism) and [**SpiderFoot**](tools/spiderfoot)), DMLab CEH enables an AI **Commander Agent** to dynamically plan, dispatch specialized agents, correlate vulnerabilities across a shared blackboard, and generate audit-ready CVSS v3.1/v4.0 deliverables.
 
 > [!IMPORTANT]
-> **Authorization & Compliance Notice**  
-> This project is designed strictly for **educational research, authorized red teaming, and lawful penetration testing** within explicitly defined scopes (private labs, CTFs, and documented Bug Bounty/client engagements). **No authorization → strictly no execution.**
+> **Compliance Notice**  
+> This project is designed strictly for **educational research, authorized red teaming, and lawful penetration testing** within explicitly defined scopes (private labs, CTFs, and documented Bug Bounty/client engagements). Responsibility for lawful use rests entirely with the user.
 
 ---
 
@@ -29,12 +29,10 @@ The framework follows a decoupled **Orchestrator-Specialist** design where the C
 
 ```mermaid
 graph TD
-    User([User / Security Analyst]) -->|Target & Authorization Scope| Commander[Commander Orchestrator Agent]
+    User([User / Security Analyst]) -->|Target & Scope| Commander[Commander Orchestrator Agent]
     
     subgraph Core Lifecycle
-        Commander -->|1. Authorization Gate| AuthCheck{Authorized Scope?}
-        AuthCheck -->|No| Stop([Halt Execution])
-        AuthCheck -->|Yes| DAG[Build Dynamic Assessment DAG]
+        Commander --> DAG[Build Dynamic Assessment DAG]
         
         DAG -->|Dispatch Phase 1| ReconLayer[Layer 1: Passive OSINT & Recon]
         DAG -->|Dispatch Phase 2| FastTriage[Layer 2: Fast Triage & Quick Wins]
@@ -213,7 +211,6 @@ python sfcli.py -s http://127.0.0.1:5001 # Interactive CLI terminal & daemon cli
 
 ## ⚖️ Ethics & Legal Disclaimer
 
-- **Strict Authorization:** All assessments must be preceded by validated written authorization.
 - **Data Privacy:** Raw target telemetry and scan outputs (`report/`, `results/`) are strictly gitignored and must never be committed to public version control.
 - **Use at Your Own Risk:** This project is provided under the **MIT License**, "AS IS" and **without warranty or restrictions beyond that license**. The author is not liable for any misuse. **Responsibility for lawful use rests entirely with the user** — misuse against unauthorized systems is strictly illegal.
 - **Lawful Purpose:** DMLab CEH is distributed to enhance defensive security posture through rigorous, standardized ethical testing.

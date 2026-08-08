@@ -9,16 +9,15 @@ This guide defines the standards for managing penetration testing engagements, o
 Every penetration testing campaign managed by DMLab CEH follows a structured lifecycle from initiation to final remediation tracking:
 
 ```
-[1. Initiation & Scope] -> [2. Authorization Gate] -> [3. Reconnaissance] 
-  -> [4. Assessment & PoC] -> [5. Deliverable Synthesis] -> [6. Remediation & Retest]
+[1. Initiation & Scope] -> [2. Reconnaissance] 
+  -> [3. Assessment & PoC] -> [4. Deliverable Synthesis] -> [5. Remediation & Retest]
 ```
 
 ### Key Milestones
 1. **Scope Definition**: Target boundaries, IP/domain ranges, excluded systems, and authorized test windows recorded in `results/engagement.json`.
-2. **Authorization Sign-off**: Explicit, written rules of engagement (RoE) confirmed.
-3. **Blackboard Tracking**: Real-time status updates per target asset.
-4. **Deliverable Finalization**: Generating standardized audit reports in `report/`.
-5. **Engagement Close**: Archiving deliverables and performing evidence cleanup.
+2. **Blackboard Tracking**: Real-time status updates per target asset.
+3. **Deliverable Finalization**: Generating standardized audit reports in `report/`.
+4. **Engagement Close**: Archiving deliverables and performing evidence cleanup.
 
 ---
 

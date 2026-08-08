@@ -116,6 +116,5 @@ python sf.py -M
 
 ## 6. Golden Rules & Engagement Hygiene
 
-1. **Authorization Gate:** Never execute active tests against a target without explicit, written authorization.
-2. **Local Isolation:** Never commit runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) to public git branches.
-3. **Evidence Integrity:** Retain full, reproducible HTTP request/response payloads for all findings.
+1. **Local Isolation:** Never commit runtime artifacts (`report/`, `results/`, `.venv/`, `.agents/`) to public git branches.
+2. **Evidence Integrity:** Retain full, reproducible HTTP request/response payloads for all findings.
