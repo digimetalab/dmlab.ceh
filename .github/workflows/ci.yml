@@ -1,0 +1,30 @@
+name: CI Validation
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate repository integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate skill frontmatter
+        run: python3 .github/scripts/validate_repo.py --skills
+
+      - name: Validate .gitmodules registration
+        run: python3 .github/scripts/validate_repo.py --gitmodules
+
+      - name: Validate shell script syntax
+        run: python3 .github/scripts/validate_repo.py --shell
