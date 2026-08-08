@@ -170,21 +170,26 @@ The skill catalog provides specialized knowledge modules formatted for direct AI
 
 ---
 
-## 🛠️ Tooling & Footprinting Workflows
+## 🛠️ Tooling & Footprinting Workflows (Full CLI Mode)
 
-All tools operate natively within the local `.venv` environment:
+All tools operate natively within the local `.venv` environment and feature rich CLI capabilities:
 
 ```bash
-# 1. Domain & Network Recon via Prism CLI
+# 1. Prism OSINT Platform CLI (Domain, Email, IP, Telegram, Username, Watchlists)
 cd tools/prism
-python cli.py scan example.com --type domain --json --verbose
+python cli.py scan example.com --type domain --json --verbose -o ../../results/recon/target.json
 python cli.py scan someone@example.com --type email --json
+python cli.py watchlist add example.com --interval 6 # Scheduled automated rescans
 
-# 2. Deep OSINT & Footprinting via SpiderFoot
+# 2. SpiderFoot Autonomous Intelligence CLI (200+ Specialized OSINT Modules)
 cd tools/spiderfoot
-python sf.py -s example.com -u all -o json
-python sf.py -M # List all active footprinting modules
+python sf.py -s example.com -u all -o json > ../../results/recon/spiderfoot.json
+python sf.py -s example.com -u passive -o json # Strictly non-intrusive reconnaissance
+python sf.py -M # List all 200+ available footprinting modules
+python sfcli.py -s http://127.0.0.1:5001 # Interactive CLI terminal & daemon client
 ```
+
+👉 *For advanced switches, module filters, and daemon usage, consult the [Comprehensive CLI Tooling Guide](docs/TOOLING.md).*
 
 ---
 
@@ -193,6 +198,7 @@ python sf.py -M # List all active footprinting modules
 | Guide | Description |
 |---|---|
 | 🚀 [**Onboarding Guide**](docs/ONBOARDING.md) | Comprehensive step-by-step setup and environment verification. |
+| 🧰 [**CLI Tooling Manual**](docs/TOOLING.md) | Maximum CLI utilization guide for Prism and SpiderFoot. |
 | 🤖 [**Agent Architecture**](docs/AGENTS.md) | In-depth breakdown of the Commander schema and specialist dispatch rules. |
 | 🔄 [**End-to-End Workflow**](docs/WORKFLOW.md) | Standard 8-phase website and infrastructure assessment lifecycle. |
 | 🗺️ [**Skills Mindmap**](docs/MINDMAP.md) | Complete taxonomy mapping skills to OWASP Top 10 and MITRE ATT&CK. |
