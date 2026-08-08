@@ -1,0 +1,32 @@
+{
+  "finding_id": "FINDING-YYYY-XXX",
+  "title": "<Short Descriptive Vulnerability Title>",
+  "severity": "<CRITICAL | HIGH | MEDIUM | LOW | INFORMATIONAL>",
+  "cvss_v31": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+  "cvss_score": 9.8,
+  "cvss_v40": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+  "affected_component": "<Exact URL / Parameter / Header / Port / Component>",
+  "cwe_id": "CWE-XXX",
+  "owasp_category": "AXX:2021 - <Category Name>",
+  "discovered_by": "<agent-name (e.g., sqli-agent, web-agent, osint-agent)>",
+  "loaded_skill": "<skill-name (e.g., offensive-sqli, offensive-business-logic, offensive-fast-checking)>",
+  "timestamp": "2026-08-08T00:00:00Z",
+  "evidence_file": "results/evidence/<evidence_filename>.http",
+  "details": {
+    "summary": "<1-paragraph description of what the finding is and worst-case consequence>",
+    "root_cause": "<Technical explanation of why the vulnerability exists>",
+    "reproduction_steps": [
+      "1. Send the following HTTP request to the target endpoint...",
+      "2. Observe the following HTTP response indicating vulnerability..."
+    ],
+    "request_payload": "GET /endpoint?param=test HTTP/1.1\nHost: target.com\n...",
+    "response_payload": "HTTP/1.1 200 OK\n...\n"
+  },
+  "impact": "<Quantified, concrete business impact (e.g., unauthorized read/write access to customer records)>",
+  "remediation": {
+    "fix_bug": "<Specific code fix, parameterized queries, or configuration directive>",
+    "defense_in_depth": "<Secondary security control, e.g., WAF rule, input validation>",
+    "detection": "<SIEM query or log monitoring rule to detect exploitation attempts>"
+  },
+  "retest_notes": "<Exact request and expected status/response to verify fix>"
+}
