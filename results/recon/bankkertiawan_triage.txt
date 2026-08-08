@@ -1,0 +1,39 @@
+=== crt.sh subdomains ===
+ERR Expecting value: line 1 column 1 (char 0)
+
+=== robots.txt ===
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://bankkertiawan.com/wp-sitemap.xml
+
+=== HTTP headers root ===
+HTTP/2 200 
+x-powered-by: PHP/8.2.32
+content-type: text/html; charset=UTF-8
+link: <https://bankkertiawan.com/wp-json/>; rel="https://api.w.org/"
+link: <https://bankkertiawan.com/wp-json/wp/v2/pages/7174>; rel="alternate"; title="JSON"; type="application/json"
+link: <https://bankkertiawan.com/>; rel=shortlink
+vary: Accept-Encoding
+etag: "2973-1786137850;;;"
+x-litespeed-cache: hit
+date: Fri, 07 Aug 2026 23:54:02 GMT
+server: LiteSpeed
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+
+
+=== security headers root (GET) ===
+HTTP/2 200 
+x-powered-by: PHP/8.2.32
+content-type: text/html; charset=UTF-8
+link: <https://bankkertiawan.com/wp-json/>; rel="https://api.w.org/"
+link: <https://bankkertiawan.com/wp-json/wp/v2/pages/7174>; rel="alternate"; title="JSON"; type="application/json"
+link: <https://bankkertiawan.com/>; rel=shortlink
+vary: Accept-Encoding
+etag: "2973-1786137850;;;"
+x-litespeed-cache: hit
+date: Fri, 07 Aug 2026 23:54:02 GMT
+server: LiteSpeed
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+
